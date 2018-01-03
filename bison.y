@@ -53,7 +53,7 @@
 %%
 
 program:
-     VAR vdeclarations BEGINZ commands END
+     VAR vdeclarations BEGINZ commands END    { printResult(); return 0;}
 
 vdeclarations:
      vdeclarations pidentifier               { addVarIdentifier($2); }
