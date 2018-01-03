@@ -21,6 +21,7 @@
   void finalize();
   void printResult();
   void addVarIdentifier(char* id);
+  void checkIfIdExists(char* id);
 %}
 
 %union{
@@ -127,6 +128,7 @@ void finalize(){
 
 void addVarIdentifier(char* id){
   printf("BISON: pidentifier found '%s'\n", id);
+  checkIfIdExists(id);
   ids[ids_count] = id;
   ids_count++;
   if(current_state == BEGINZ_STATE){
@@ -144,6 +146,13 @@ void addVarIdentifier(char* id){
   }
 }
 
+void checkIfIdExists(char* id){
+    for(int i=0; i < ids_count; i++){
+        if(strcmp(id, ids[i]) == 0){
+           yyerror("Second identifier declaration.");
+        }
+    }
+}
 
 void printResult(){
   printf("HALT\n");
