@@ -14,7 +14,9 @@
 
 %union{
     long num;
+    char* id;
 }
+
 
 %left '-' '+'
 %left '*' '/' '%'
@@ -25,8 +27,15 @@
 %token num            /* value */
 %token pidentifier    /* identifier */
 %token READ WRITE     /* I/O */
-%token '[' ']' '>' '<' '=' ';' ':'
+%token '[' ']' '>' '<' ';'
+%token ASSIGN ":="
+%token ISEQ "="
+%token LEQ "<="
+%token GTEQ ">="
+%token UNEQ "<>"
 %token EOL /* miscellaneous */
+
+%type <id> pidentifier
 
 %%
 
@@ -34,7 +43,7 @@ program:
      VAR vdeclarations BEGINZ commands END
 
 vdeclarations:
-     vdeclarations pidentifier
+     vdeclarations pidentifier  {printf("BISON pidentifier %s", $2);}
      | vdeclarations pidentifier '[' num ']'
      |
 
@@ -43,7 +52,7 @@ commands:
      | command
 
 command:
-     identifier ':' '=' expression ';'
+     identifier ASSIGN expression ';'
      | IF condition THEN commands ELSE commands ENDIF
      | IF condition THEN commands ENDIF
      | WHILE condition DO commands ENDWHILE
@@ -61,12 +70,12 @@ expression:
      | value '%' value
 
 condition:
-     value '=' value
-     | value '<' '>' value
+     value ISEQ value
+     | value UNEQ value
      | value '<' value
      | value '>' value
-     | value '<' '=' value
-     | value '>' '=' value
+     | value LEQ value
+     | value GTEQ value
 
 value:
      num
