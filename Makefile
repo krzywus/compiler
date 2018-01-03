@@ -23,6 +23,8 @@ bison:
 compile:
 	cp errors.h bin/
 	cp sectionsKeywords.h bin/
+	cp pidentifierAdding.h bin/
+	cp constants.h bin/
 	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 
 run:
