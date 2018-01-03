@@ -1,12 +1,8 @@
 
 %{
 	#include<math.h>
+	#include<string.h>
   #include "bison.yy.h"
-
-	#define VAR_STATE 11
-	#define BEGINZ_STATE 12
-	#define END_STATE 13
-	int current_state = -1;
 
   int debug = 1;
   void printLex(char* s);
@@ -14,24 +10,27 @@
 	long varFound();
 	long beginFound();
 	long endFound();
+	long pidentifierFound();
 %}
 
 OPERATOR		[+\-*/%]
 DIGIT				[0-9]
+pidentifier [_a-z]+
 
 %%
 
-VAR				return varFound();
-BEGIN			return beginFound();
-END				return endFound();
-.*				{printLex(yytext); return ';';}
+[\ \t]*				;
+VAR						return varFound();
+BEGIN				return beginFound();
+END						return endFound();
+{pidentifier} return pidentifierFound();
 \n
 
 %%
 
 
 long varFound(){
-	printLex(yytext);
+	printLex("found var");
 	if(current_state != -1){
 		lexError("Second VAR section.");
 		exit(11);
@@ -41,18 +40,17 @@ long varFound(){
 }
 
 long beginFound(){
-	printLex(yytext);
+	printLex("found begin");
 	if(current_state != 11){
 		lexError("Second BEGIN section.");
 		exit(12);
 	}
 	current_state = BEGINZ_STATE;
 	return BEGINZ;
-
 }
 
 long endFound(){
-	printLex(yytext);
+	printLex("found end");
 	if(current_state != 12){
 		lexError("Program already finished.");
 		exit(13);
@@ -61,12 +59,22 @@ long endFound(){
 	return END;
 }
 
+long pidentifierFound(){
+	printLex(yytext);
+	if(current_state != 11){
+		lexError("Illegal identifier.");
+		exit(14);
+	}
+	yylval.id = strdup(yytext);
+	return pidentifier;
+}
+
 void lexError(char* s){
 	printf("Lexical error: %s\n", s);
 }
 
 void printLex(char* s) {
   if(debug){
-    printf("FLEX: %s\n", s);
+    printf("FLEX: '%s'\n", s);
   }
 }

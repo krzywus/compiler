@@ -4,12 +4,23 @@
   #include <stdlib.h>
   #include <math.h>
   #include <string.h>
-  char output_string[100];
+
+	#define VAR_STATE 11
+	#define BEGINZ_STATE 12
+	#define END_STATE 13
+  int current_state = -1;
+
+  int ids_max = 0;
+  int ids_count = 0;
+  char** ids;
 
   int yylex (void);
   void yyerror (char const *);
 
+  void initialize();
+  void finalize();
   void printResult();
+  void addVarIdentifier(char* id);
 %}
 
 %union{
@@ -43,7 +54,7 @@ program:
      VAR vdeclarations BEGINZ commands END
 
 vdeclarations:
-     vdeclarations pidentifier  {printf("BISON pidentifier %s", $2);}
+     vdeclarations pidentifier               { addVarIdentifier($2); }
      | vdeclarations pidentifier '[' num ']'
      |
 
@@ -90,16 +101,51 @@ identifier:
 
 %%
 int main (void) {
+  initialize();
   long result = 0;
   /*while(result == 0) {*/
-    strcpy (output_string,"");
 	  result = yyparse();
 	/*}*/
+  finalize();
   return 0;
 }
 
+void initialize(){
+  ids_count = 0;
+  ids_max = 3;
+  ids = malloc(ids_max * sizeof(char*));
+}
+
+void finalize(){
+  printf("Identifiers:\n");
+  for(int i=0; i < ids_count; i++){
+    printf("'%s'\n", ids[i]);
+    free(ids[i]);
+  }
+  free(ids);
+}
+
+void addVarIdentifier(char* id){
+  printf("BISON: pidentifier found '%s'\n", id);
+  ids[ids_count] = id;
+  ids_count++;
+  if(current_state == BEGINZ_STATE){
+    printf("Current State: %d. Fixing identifiers.\n", current_state);
+    ids_max = ids_count;
+  }else if(ids_count == ids_max-1){
+    printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
+    ids_max += 10;
+    char** newpointer = realloc(ids, ids_max * sizeof(char*));
+    if (newpointer == NULL) {
+      yyerror("Failed to reallocate memory.");
+    } else {
+        ids = newpointer;
+    }
+  }
+}
+
+
 void printResult(){
-  printf("%s", output_string);
   printf("HALT\n");
 }
 
@@ -107,6 +153,7 @@ void printResult(){
 void yyerror (char const *s)
 {
   fprintf (stderr, "BISON: %s\n", s);
+  finalize();
   exit(1);
   /*main();*/
 }
