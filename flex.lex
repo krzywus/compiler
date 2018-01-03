@@ -4,6 +4,7 @@
 	#include<string.h>
   #include "bison.yy.h"
 
+
   int debug = 1;
   void printLex(char* s);
   void lexError(char* s);
@@ -34,8 +35,8 @@ END						return endFound();
 long varFound(){
 	printLex("found var");
 	if(current_state != -1){
-		lexError("Second VAR section.");
-		exit(11);
+		lexError(VAR_STATE_ERROR);
+		exit(VAR_STATE_ERROR_CODE);
 	}
 	current_state = VAR_STATE;
 	return VAR;
@@ -44,8 +45,8 @@ long varFound(){
 long beginFound(){
 	printLex("found begin");
 	if(current_state != VAR_STATE){
-		lexError("Missing VAR section or second BEGIN section.");
-		exit(12);
+		lexError(BEGINZ_STATE_ERROR);
+		exit(BEGINZ_STATE_ERROR_CODE);
 	}
 	current_state = BEGINZ_STATE;
 	return BEGINZ;
@@ -54,8 +55,8 @@ long beginFound(){
 long endFound(){
 	printLex("found end");
 	if(current_state != BEGINZ_STATE){
-		lexError("Program was not started or already finished.");
-		exit(13);
+		lexError(END_STATE_ERROR);
+		exit(END_STATE_ERROR_CODE);
 	}
 	current_state = END_STATE;
 	return END;
@@ -64,8 +65,8 @@ long endFound(){
 long pidentifierFound(){
 	printLex(yytext);
 	if(current_state != VAR_STATE){
-		lexError("Illegal identifier.");
-		exit(14);
+		lexError(ILLEGAL_IDENTIFIER);
+		exit(ILLEGAL_IDENTIFIER_ERROR_CODE);
 	}
 	yylval.id = strdup(yytext);
 	return pidentifier;
