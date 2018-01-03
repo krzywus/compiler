@@ -13,22 +13,24 @@
 	long pidentifierFound();
 %}
 
-OPERATOR		[+\-*/%]
-DIGIT				[0-9]
-pidentifier [_a-z]+
+OPERATOR				[+\-*/%]
+DIGIT						[0-9]
+pidentifier 		[_a-z]+
+ALL_BUT_BRACES	[^\(\)]
+comment_re			\({ALL_BUT_BRACES}*\)
 
 %%
 
 [\ \t]*				;
 VAR						return varFound();
-BEGIN				return beginFound();
+BEGIN					return beginFound();
 END						return endFound();
 {pidentifier} return pidentifierFound();
+{comment_re}
 \n
+[A-Z]*				{ lexError("[WARNING] Unknown word found. Ignoring."); lexError(yytext); }
 
 %%
-
-
 long varFound(){
 	printLex("found var");
 	if(current_state != -1){
@@ -41,8 +43,8 @@ long varFound(){
 
 long beginFound(){
 	printLex("found begin");
-	if(current_state != 11){
-		lexError("Second BEGIN section.");
+	if(current_state != VAR_STATE){
+		lexError("Missing VAR section or second BEGIN section.");
 		exit(12);
 	}
 	current_state = BEGINZ_STATE;
@@ -51,8 +53,8 @@ long beginFound(){
 
 long endFound(){
 	printLex("found end");
-	if(current_state != 12){
-		lexError("Program already finished.");
+	if(current_state != BEGINZ_STATE){
+		lexError("Program was not started or already finished.");
 		exit(13);
 	}
 	current_state = END_STATE;
@@ -61,7 +63,7 @@ long endFound(){
 
 long pidentifierFound(){
 	printLex(yytext);
-	if(current_state != 11){
+	if(current_state != VAR_STATE){
 		lexError("Illegal identifier.");
 		exit(14);
 	}
