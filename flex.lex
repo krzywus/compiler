@@ -29,7 +29,7 @@ BEGIN										return beginFound();
 END											return endFound();
 {pidentifier} 					return pidentifierFound();
 
-{num}										{ return num; }
+{num}										{ yylval.id = strdup(yytext); return num; }
 IF											{ BEGIN(IF); return IF;}
 THEN										{ return THEN; }
 ELSE										{ return ELSE; }
