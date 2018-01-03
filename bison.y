@@ -5,7 +5,8 @@
   #include <math.h>
   #include <string.h>
 
-  #define SECOND_DECLARATION "Second identifier declaration."
+  #include "errors.h"
+
 
 	#define VAR_STATE 11
 	#define BEGINZ_STATE 12
@@ -168,14 +169,4 @@ void yyerror (char const *s)
   finalize();
   exit(getErrorCode(s));
   /*main();*/
-}
-
-int getErrorCode(char const *s){
-  if(strcmp(s, "syntax error") == 0){
-    return 2;
-  }
-  if(strcmp(s, SECOND_DECLARATION) == 0){
-    return 21;
-  }
-  return 99;
 }

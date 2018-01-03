@@ -4,7 +4,7 @@ both: flex.lex bison.y
 	@echo "\n***********************************\n"
 	$(MAKE) flex
 	@echo "\n***********************************\n"
-	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
+	$(MAKE) compile
 	mv a.out bin/a.out
 
 lex.yy.c: flex.lex
@@ -20,12 +20,15 @@ flex:
 bison:
 		bison -o bin/bison.yy.h bison.y
 
+compile:
+	cp errors.h bin/
+	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
+
 run:
 	$(MAKE) bison
 	@echo "\n***********************************\n"
 	$(MAKE) flex
 	@echo "\n***********************************\n"
-	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
-	# mv bison.yy.h.gch bin/bison.yy.h.gch
+	$(MAKE) compile
 	mv a.out bin/a.out
 	./bin/a.out
