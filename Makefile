@@ -1,7 +1,9 @@
 
 both: flex.lex bison.y
 	$(MAKE) bison
+	@echo "\n***********************************\n"
 	$(MAKE) flex
+	@echo "\n***********************************\n"
 	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 	mv a.out bin/a.out
 
@@ -20,7 +22,9 @@ bison:
 
 run:
 	$(MAKE) bison
+	@echo "\n***********************************\n"
 	$(MAKE) flex
+	@echo "\n***********************************\n"
 	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 	# mv bison.yy.h.gch bin/bison.yy.h.gch
 	mv a.out bin/a.out
