@@ -89,7 +89,7 @@ int main (void) {
 }
 
 void printResult(){
-printf("%s", output_string);
+  printf("%s", output_string);
   printf("HALT\n");
 }
 
@@ -97,5 +97,6 @@ printf("%s", output_string);
 void yyerror (char const *s)
 {
   fprintf (stderr, "BISON: %s\n", s);
+  exit(1);
   /*main();*/
 }

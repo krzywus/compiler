@@ -3,20 +3,20 @@
 	#include<math.h>
   #include "bison.yy.h"
 
-  int debug = 0;
+  int debug = 1;
   void printLex(char* s);
 %}
 
-OPERATOR		[+\-*/%^]
-DIGIT			[0-9]
+OPERATOR		[+\-*/%]
+DIGIT				[0-9]
 
 %%
 
-VAR				return VAR;
+VAR			{printLex(yytext); return VAR; }
 BEGIN			return BEGINZ;
 END				return END;
-.*				return ';';
-\n				return ';';
+.*				{printLex(yytext); return ';';}
+\n
 
 %%
 
