@@ -14,14 +14,6 @@
 	long pidentifierFound();
 %}
 
-/* Environments */
-%s IF
-%s WHILE
-%s FOR
-%s condition
-%x array_opened
-
-
 OPERATOR				[+\-*/%]
 DIGIT						[0-9]
 num							{DIGIT}+
@@ -35,33 +27,33 @@ comment_re			\({ALL_BUT_BRACES}*\)
 VAR						return varFound();
 BEGIN					return beginFound();
 END						return endFound();
-<*>{pidentifier} return pidentifierFound();
+{pidentifier} return pidentifierFound();
 
-<*>num									{ return num; }
+{num}								{ return num; }
 IF											{ BEGIN(IF); return IF;}
-<IF>THEN								{ return THEN; }
-<IF>ELSE								{ return ELSE; }
-<IF>ENDIF								{ BEGIN(0); return ENDIF; }
+THEN								{ return THEN; }
+ELSE								{ return ELSE; }
+ENDIF								{ BEGIN(0); return ENDIF; }
 WHILE										{ BEGIN(WHILE); return WHILE; }
-<WHILE>DO								{ return DO; }
-<WHILE>ENDWHILE					{ BEGIN(0); return ENDWHILE; }
+DO								{ return DO; }
+ENDWHILE					{ BEGIN(0); return ENDWHILE; }
 FOR											{ BEGIN(FOR); return FOR; }
-<FOR>FROM								{ return FROM; }
-<FOR>TO									{ return TO; }
-<FOR>DOWNTO							{ return DOWNTO; }
-<FOR>ENDFOR							{ BEGIN(0); return ENDFOR; }
+FROM								{ return FROM; }
+TO									{ return TO; }
+DOWNTO							{ return DOWNTO; }
+ENDFOR							{ BEGIN(0); return ENDFOR; }
 READ										{ return READ; }
 WRITE										{ return WRITE; }
 "["											{ return '['; }
-<array_opened>"]"				{ return ']'; }
+"]"				{ return ']'; }
 ";"											{ return ';'; }
 ":=" 										{ return ASSIGN; }
-<condition>">"					{ return '>'; }
-<condition>"<"					{ return '<'; }
-<condition>"=" 					{ return ISEQ; }
-<condition>"<="					{ return LEQ; }
-<condition>">="					{ return GTEQ; }
-<condition>"<>"					{ return UNEQ; }
+">"					{ return '>'; }
+"<"					{ return '<'; }
+"=" 					{ return ISEQ; }
+"<="					{ return LEQ; }
+">="					{ return GTEQ; }
+"<>"					{ return UNEQ; }
 
 {comment_re}
 \n
