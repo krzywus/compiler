@@ -117,7 +117,7 @@ int main (void) {
 
 void initialize(){
   ids_count = 0;
-  ids_max = 3;
+  ids_max = 20;
   ids = malloc(ids_max * sizeof(char*));
 }
 
