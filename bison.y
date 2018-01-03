@@ -1,6 +1,7 @@
 
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   #include <math.h>
   #include <string.h>
   char output_string[100];
