@@ -9,12 +9,12 @@ extern int ids_count;
 extern int ids_max;
 
 void addVarIdentifier(char* id);
-void checkIfIdExists(char* id);
+void checkIfUnique(char* id);
 void yyerror(char const *);
 
 void addVarIdentifier(char* id){
   printf("BISON: pidentifier found '%s'\n", id);
-  checkIfIdExists(id);
+  checkIfUnique(id);
   ids[ids_count] = id;
   ids_count++;
   if(current_state == BEGINZ_STATE){
@@ -32,7 +32,7 @@ void addVarIdentifier(char* id){
   }
 }
 
-void checkIfIdExists(char* id){
+void checkIfUnique(char* id){
     for(int i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
            yyerror(SECOND_DECLARATION);
