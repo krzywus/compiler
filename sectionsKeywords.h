@@ -1,3 +1,5 @@
+#ifndef SECTION_KEYWORDS_H
+#define SECTION_KEYWORDS_H
 
 void printLex(char* s);
 void lexError(char* s);
@@ -31,3 +33,5 @@ long endFound(){
 	current_state = END_STATE;
 	return END;
 }
+
+#endif

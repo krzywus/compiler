@@ -1,3 +1,5 @@
+#ifndef ERRORS_H
+#define ERRORS_H
 
 /* Flex */
 #define VAR_STATE_ERROR "Second VAR section."
@@ -27,3 +29,5 @@ int getErrorCode(char const *s){
   }
   return DEFAULT_ERROR_CODE;
 }
+
+#endif
