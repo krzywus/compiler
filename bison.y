@@ -5,6 +5,8 @@
   #include <math.h>
   #include <string.h>
 
+  #define SECOND_DECLARATION "Second identifier declaration."
+
 	#define VAR_STATE 11
 	#define BEGINZ_STATE 12
 	#define END_STATE 13
@@ -22,6 +24,7 @@
   void printResult();
   void addVarIdentifier(char* id);
   void checkIfIdExists(char* id);
+  int getErrorCode(char const *s);
 %}
 
 %union{
@@ -149,7 +152,7 @@ void addVarIdentifier(char* id){
 void checkIfIdExists(char* id){
     for(int i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
-           yyerror("Second identifier declaration.");
+           yyerror(SECOND_DECLARATION);
         }
     }
 }
@@ -163,6 +166,16 @@ void yyerror (char const *s)
 {
   fprintf (stderr, "BISON: %s\n", s);
   finalize();
-  exit(1);
+  exit(getErrorCode(s));
   /*main();*/
+}
+
+int getErrorCode(char const *s){
+  if(strcmp(s, "syntax error") == 0){
+    return 2;
+  }
+  if(strcmp(s, SECOND_DECLARATION) == 0){
+    return 21;
+  }
+  return 99;
 }
