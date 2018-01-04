@@ -3,16 +3,9 @@
 
 extern int getIdNumIfExists(char* id);
 
-void assignToVariable(char* id, char* num) {
-  if(debug) printf("assign: %s %s\n", id, num);
-  char *end;
-  long lnum = strtol(num, &end, 10);
-  if (num == end ) { // got identifier
-    int i = getIdNumIfExists(end);
-    printf("LOAD %d\n", i);
-  } else {
-    printCommandsForCreatingNumber(lnum);
-  }
+void assignToVariable(char* id) {
+  if(debug) printf("assign to: %s\n", id);
+  printf("LOAD %d\n", ids_count);
   int assignId = getIdNumIfExists(id);
   printf("STORE %d\n", assignId);
 }

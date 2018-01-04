@@ -10,6 +10,7 @@
   #include "IO.h"
   #include "numberCreation.h"
   #include "assignment.h"
+  #include "arithmetic.h"
 
   int current_state = -1;
 
@@ -24,11 +25,18 @@
   void finalize();
   void printResult();
   void addVarIdentifier(char* id);
-  void assignToVariable(char* id, char* num);
+  void assignToVariable(char* id);
   void checkIfIdExists(char* id);
   void readAndStore(char* id);
   void writeVariable(char* var);
   int getErrorCode(char const *s);
+  /* arithmetic.h */
+  void putValueToTmp(char* num);
+  void addition(char* a, char* b);
+  void substraction(char* a, char* b);
+  void divide(char* a, char* b);
+  void multiply(char* a, char* b);
+  void mod(char* a, char* b);
 %}
 
 %union{
@@ -75,7 +83,7 @@ commands:
      | command
 
 command:
-     identifier ASSIGN expression ';'                                 { assignToVariable($1, $3); }
+     identifier ASSIGN expression ';'                                 { assignToVariable($1); }
      | IF condition THEN commands ELSE commands ENDIF
      | IF condition THEN commands ENDIF
      | WHILE condition DO commands ENDWHILE
@@ -85,12 +93,12 @@ command:
      | WRITE value ';'          { writeVariable($2); }
 
 expression:
-     value                    /*{ return $1; }*/
-     | value '+' value        /*{ return ($1, $3); }*/
-     | value '-' value        /*{ return ($1, $3); }*/
-     | value '*' value        /*{ return ($1, $3); }*/
-     | value '/' value        /*{ return ($1, $3); }*/
-     | value '%' value        /*{ return ($1, $3); }*/
+     value                    { putValueToTmp($1); }
+     | value '+' value        { addition($1, $3); }
+     | value '-' value        { substraction($1, $3); }
+     | value '*' value        { multiply($1, $3); }
+     | value '/' value        { divide($1, $3); }
+     | value '%' value        { mod($1, $3); }
 
 condition:
      value ISEQ value
