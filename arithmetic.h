@@ -35,27 +35,32 @@ void addition(char* a, char* b) {
 }
 
 void substraction(char* a, char* b) {
-	printf("substraction: %s %s\n", a, b);
-  convertStringToNumberAndPutInRegister(a);
-  printf("STORE %d\n", ids_count);
+	if(debug) printf("substraction: %s %s\n", a, b);
   convertStringToNumberAndPutInRegister(b);
+  printf("STORE %d\n", ids_count);
+  convertStringToNumberAndPutInRegister(a);
   printf("SUB %d\n", ids_count);
   printf("STORE %d\n", ids_count);
   free(a);
   free(b);
 }
 
-void divide(char* a, char* b) {
-	printf("divide: %s %s\n", a, b);
+void multiply(char* a, char* b) {
+  if(debug) printf("multiply: %s %s\n", a, b);
   free(a);
   free(b);
 }
 
-void multiply(char* a, char* b) {
-	printf("multiply: %s %s\n", a, b);
+void divide(char* a, char* b) {
+	if(debug) printf("divide: %s %s\n", a, b);
+  if (strcmp(b, "0") == 0) {
+    if(debug) printf("Dividing by zero.\n");
+    printf("ZERO\nSTORE %d\n", ids_count);
+  }
   free(a);
   free(b);
 }
+
 
 void mod(char* a, char* b) {
 	printf("mod: %s %s\n", a, b);
