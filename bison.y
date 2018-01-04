@@ -124,9 +124,7 @@ void initialize(){
 }
 
 void finalize(){
-  printf("Identifiers:\n");
   for(int i=0; i < ids_count; i++){
-    printf("'%s'\n", ids[i]);
     free(ids[i]);
   }
   free(ids);

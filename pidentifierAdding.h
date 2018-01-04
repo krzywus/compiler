@@ -3,6 +3,7 @@
 
 #include "constants.h"
 
+extern int debug;
 extern int current_state;
 extern char** ids;
 extern int ids_count;
@@ -13,15 +14,15 @@ void checkIfUnique(char* id);
 void yyerror(char const *);
 
 void addVarIdentifier(char* id){
-  printf("BISON: pidentifier found '%s'\n", id);
+  if(debug) printf("BISON: pidentifier found '%s'\n", id);
   checkIfUnique(id);
   ids[ids_count] = id;
   ids_count++;
   if(current_state == BEGINZ_STATE){
-    printf("Current State: %d. Fixing identifiers.\n", current_state);
+    if(debug) printf("Current State: %d. Fixing identifiers.\n", current_state);
     ids_max = ids_count;
   }else if(ids_count == ids_max-1){
-    printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
+    if(debug) printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
     ids_max += 10;
     char** newpointer = realloc(ids, ids_max * sizeof(char*));
     if (newpointer == NULL) {
