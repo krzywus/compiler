@@ -5,7 +5,7 @@
   #include "bison.yy.h"
 	#include "sectionsKeywords.h"
 
-  int debug = 1;
+  int debug = 0;
   void printLex(char* s);
   void lexError(char* s);
 	long varFound();
