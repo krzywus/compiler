@@ -22,7 +22,6 @@ void readAndStore(char* id){
   yyerror(UNDECLARED_VARIABLE);
 }
 
-/**TODO: */
 void writeVariable(char* var){
   char *end;
   long lnum = strtol(var, &end, 10);
