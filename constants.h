@@ -30,4 +30,9 @@ int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id) {
     return free_tmp_pointer;
 }
 
+int getFreeMemoryAddress(){
+  free_tmp_pointer++;
+  return free_tmp_pointer;
+}
+
 #endif
