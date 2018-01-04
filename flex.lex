@@ -14,7 +14,6 @@
 	long pidentifierFound();
 %}
 
-OPERATOR				[+\-*/%]
 DIGIT						[0-9]
 num							{DIGIT}+
 pidentifier 		[_a-z]+
@@ -54,6 +53,11 @@ WRITE										{ return WRITE; }
 "<="										{ return LEQ; }
 ">="										{ return GTEQ; }
 "<>"										{ return UNEQ; }
+"+"											{ return '+'; }
+"-"											{ return '-'; }
+"*"											{ return '*'; }
+"/"											{ return '/'; }
+"%"											{ return '%'; }
 
 {comment_re}
 \n
