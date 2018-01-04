@@ -8,6 +8,7 @@
   #include "errors.h"
   #include "pidentifierAdding.h"
   #include "IO.h"
+  #include "numberCreation.h"
 
   int current_state = -1;
 
