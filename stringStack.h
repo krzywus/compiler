@@ -3,6 +3,8 @@
 
 #define MAXSIZE 1000
 
+extern void yyerror(char const *);
+
 struct stack {
   char** stk;
   int top;
@@ -20,7 +22,7 @@ void finalizeStack(STACK *s) {
 
 void push (STACK *s, char* instruction) {
     if (s->top == (MAXSIZE - 1)) {
-        printf ("[ERROR] Stack is Full\n");
+        yyerror(STACK_OVERFLOW);
         return;
     }
     else {
@@ -32,7 +34,7 @@ void push (STACK *s, char* instruction) {
 char* pop (STACK *s) {
     char* instruction;
     if (s->top <= - 1) {
-        printf ("[ERROR] Stack is Empty\n");
+        yyerror(EMPTY_STACK);
         return NULL;
     }
     else {
