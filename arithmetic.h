@@ -2,13 +2,16 @@
 #define ARITHMETIC_H
 
 void convertStringToNumberAndPutInRegister(char* num){
+  if(debug) printf("String to convert: %s\n", num);
   char *end;
   long lnum = strtol(num, &end, 10);
   if (num == end ) { // got identifier
-    int i = getIdNumIfExists(end);
+    if(debug) printf("Got memory adress identifier, loading into register.\n");
+    int i = getIdNumIfExists(num);
     printf("LOAD %d\n", i);
   } else {
     /** Trzeba wyliczyć otrzymaną liczbę poprzez instrukcje: "ZERO -> INC -> INC/SHL". */
+    if(debug) printf("Got number, calculating and putting into register.\n");
     printCommandsForCreatingNumber(lnum);
   }
 }
@@ -25,13 +28,19 @@ void addition(char* a, char* b) {
   convertStringToNumberAndPutInRegister(a);
   printf("STORE %d\n", ids_count);
   convertStringToNumberAndPutInRegister(b);
-  printf("ADD  %d\n", ids_count);
+  printf("ADD %d\n", ids_count);
+  printf("STORE %d\n", ids_count);
   free(a);
   free(b);
 }
 
 void substraction(char* a, char* b) {
 	printf("substraction: %s %s\n", a, b);
+  convertStringToNumberAndPutInRegister(a);
+  printf("STORE %d\n", ids_count);
+  convertStringToNumberAndPutInRegister(b);
+  printf("SUB %d\n", ids_count);
+  printf("STORE %d\n", ids_count);
   free(a);
   free(b);
 }
