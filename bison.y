@@ -20,6 +20,7 @@
   STACK *stack;
   long program_k;
   long code_k;
+  int free_tmp_pointer;
 
   int yylex (void);
   void yyerror (char const *);

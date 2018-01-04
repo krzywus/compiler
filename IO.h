@@ -29,14 +29,4 @@ void writeVariable(char* var){
   free(var);
 }
 
-/* TODO: probably should belong to some utils.h file*/
-int getIdNumIfExists(char* id) {
-    for(int i=0; i < ids_count; i++){
-        if(strcmp(id, ids[i]) == 0){
-           return i;
-        }
-    }
-    yyerror(UNDECLARED_VARIABLE);
-}
-
 #endif
