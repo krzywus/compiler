@@ -5,6 +5,8 @@
   #include "bison.yy.h"
 	#include "sectionsKeywords.h"
 
+	extern long code_k;
+
   int debug = 0;
   void printLex(char* s);
   void lexError(char* s);
@@ -61,7 +63,7 @@ WRITE										{ printLex(yytext); return WRITE; }
 "%"											{ printLex(yytext); return '%'; }
 
 {comment_re}
-\n
+\n						{ code_k++; }
 [A-Z]*				{ lexError("[WARNING] Unknown word found. Ignoring."); lexError(yytext); }
 
 %%

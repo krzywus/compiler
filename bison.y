@@ -19,6 +19,7 @@
   char** ids;
   STACK *stack;
   long program_k;
+  long code_k;
 
   int yylex (void);
   void yyerror (char const *);
