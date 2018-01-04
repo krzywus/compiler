@@ -18,6 +18,7 @@
   int ids_count = 0;
   char** ids;
   STACK *stack;
+  long program_k;
 
   int yylex (void);
   void yyerror (char const *);
@@ -137,6 +138,7 @@ int main (void) {
 }
 
 void initialize(){
+  program_k = 0;
   ids_count = 0;
   ids_max = 20;
   ids = malloc(ids_max * sizeof(char*));
