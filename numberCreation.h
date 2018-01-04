@@ -3,13 +3,11 @@
 
 #include "stringStack.h"
 
-extern void initStack(STACK *s);
-extern void finalizeStack(STACK *s);
 extern void push (STACK *s, char* instruction);
 extern char* pop (STACK *s);
 extern int isEmpty(STACK *s);
 
-STACK* stack;
+extern STACK* stack;
 
 void printCommandsForCreatingNumber(long number) {
   if(debug) printf("Preparing to print commands for creating: '%ld'\n", number);
@@ -17,10 +15,6 @@ void printCommandsForCreatingNumber(long number) {
     printf("ZERO\n");
     return;
   }
-  if(debug) printf("Allocating stack for creating number.\n");
-  STACK *stack = malloc(sizeof(STACK)*100);
-  initStack(stack);
-  if(debug) printf("Stack initialized successfully.\n");
   while(number > 1) {
       if(debug) printf("number: %lu ", number);
       if (number%2 == 0) {
@@ -37,7 +31,6 @@ void printCommandsForCreatingNumber(long number) {
     char* instruction = pop(stack);
     printf("%s", instruction);
   }
-  finalizeStack(stack);
 }
 
 #endif

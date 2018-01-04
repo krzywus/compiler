@@ -17,6 +17,7 @@
   int ids_max = 0;
   int ids_count = 0;
   char** ids;
+  STACK *stack;
 
   int yylex (void);
   void yyerror (char const *);
@@ -24,11 +25,13 @@
   void initialize();
   void finalize();
   void printResult();
-  void addVarIdentifier(char* id);
-  void assignToVariable(char* id);
   void checkIfIdExists(char* id);
+  void assignToVariable(char* id);
+  void addVarIdentifier(char* id);
+  /* IO.h */
   void readAndStore(char* id);
   void writeVariable(char* var);
+  /* errors.h */
   int getErrorCode(char const *s);
   /* arithmetic.h */
   void putValueToTmp(char* num);
@@ -37,6 +40,9 @@
   void divide(char* a, char* b);
   void multiply(char* a, char* b);
   void mod(char* a, char* b);
+  /* stringStack.h*/
+  extern void initStack(STACK *s);
+  extern void finalizeStack(STACK *s);
 %}
 
 %union{
@@ -134,6 +140,10 @@ void initialize(){
   ids_count = 0;
   ids_max = 20;
   ids = malloc(ids_max * sizeof(char*));
+  if(debug) printf("Allocating stack for creating number.\n");
+  stack = malloc(sizeof(STACK)*100);
+  initStack(stack);
+  if(debug) printf("Stack initialized successfully.\n");
 }
 
 void finalize(){
@@ -144,6 +154,7 @@ void finalize(){
   }
   if(debug) printf("\n");
   free(ids);
+finalizeStack(stack);
 }
 
 void printResult(){
