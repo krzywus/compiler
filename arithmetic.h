@@ -15,15 +15,13 @@ void convertStringToNumberAndPutInRegister(char* num){
 
 void putValueToTmp(char* num){
   if(debug) printf("putting number to tmp: %s\n", num);
-  char *end;
   convertStringToNumberAndPutInRegister(num);
   printf("STORE %d\n", ids_count);
   free(num);
 }
 
 void addition(char* a, char* b) {
-	printf("addition: %s %s\n", a, b);
-  char *end;
+	if(debug) printf("addition: %s %s\n", a, b);
   convertStringToNumberAndPutInRegister(a);
   printf("STORE %d\n", ids_count);
   convertStringToNumberAndPutInRegister(b);
