@@ -26,7 +26,7 @@ void readAndStore(char* id){
 void writeVariable(char* var){
   char *end;
   long lnum = strtol(var, &end, 10);
-  if (end == var) {    //if no characters were converted these pointers are equal
+  if (end == var) {    // got identifier
     if(debug) printf("BISON DEBUG: got identifier, not value: %s\n", var);
     int i = getIdNumIfExists(var);
     printf("LOAD %d\n", i);
@@ -38,7 +38,7 @@ void writeVariable(char* var){
   free(var);
 }
 
-int getIdNumIfExists(char* id){
+int getIdNumIfExists(char* id) {
     for(int i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
            return i;

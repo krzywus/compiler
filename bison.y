@@ -9,6 +9,7 @@
   #include "pidentifierAdding.h"
   #include "IO.h"
   #include "numberCreation.h"
+  #include "assignment.h"
 
   int current_state = -1;
 
@@ -23,6 +24,7 @@
   void finalize();
   void printResult();
   void addVarIdentifier(char* id);
+  void assignToVariable(char* id, char* num);
   void checkIfIdExists(char* id);
   void readAndStore(char* id);
   void writeVariable(char* var);
@@ -32,6 +34,7 @@
 %union{
     long num;
     char* id;
+    char* value;
 }
 
 
@@ -54,7 +57,8 @@
 
 %type <id> pidentifier
 %type <id> identifier
-%type <id> value
+%type <value> value
+%type <value> expression
 
 %%
 
@@ -71,7 +75,7 @@ commands:
      | command
 
 command:
-     identifier ASSIGN expression ';'
+     identifier ASSIGN expression ';'                                 { assignToVariable($1, $3); }
      | IF condition THEN commands ELSE commands ENDIF
      | IF condition THEN commands ENDIF
      | WHILE condition DO commands ENDWHILE
@@ -81,12 +85,12 @@ command:
      | WRITE value ';'          { writeVariable($2); }
 
 expression:
-     value
-     | value '+' value
-     | value '-' value
-     | value '*' value
-     | value '/' value
-     | value '%' value
+     value                    /*{ return $1; }*/
+     | value '+' value        /*{ return ($1, $3); }*/
+     | value '-' value        /*{ return ($1, $3); }*/
+     | value '*' value        /*{ return ($1, $3); }*/
+     | value '/' value        /*{ return ($1, $3); }*/
+     | value '%' value        /*{ return ($1, $3); }*/
 
 condition:
      value ISEQ value
