@@ -137,9 +137,12 @@ void initialize(){
 }
 
 void finalize(){
+  if(debug) printf("Identifiers: ");
   for(int i=0; i < ids_count; i++){
+    if(debug) printf("%s ", ids[i]);
     free(ids[i]);
   }
+  if(debug) printf("\n");
   free(ids);
 }
 
