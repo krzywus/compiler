@@ -7,6 +7,7 @@ extern int current_state;
 extern char** ids;
 extern int ids_count;
 extern int ids_max;
+extern long program_k;
 
 void yyerror(char const *);
 int getIdNumIfExists(char* id);
@@ -16,7 +17,7 @@ void convertStringToNumberAndPutInRegister(char* num);
 void readAndStore(char* id){
   for(int i=0; i < ids_count; i++){
       if(strcmp(id, ids[i]) == 0){
-         printf("GET\nSTORE %d\n", i);
+         printf("GET\nSTORE %d\n", i); program_k += 2;
          return;
       }
   }
