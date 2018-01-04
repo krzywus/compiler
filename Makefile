@@ -28,6 +28,7 @@ compile:
 	cp IO.h bin/
 	cp numberCreation.h bin/
 	cp stringStack.h bin/
+	cp assignment.h bin/
 	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 
 run:
