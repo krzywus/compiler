@@ -2,6 +2,8 @@
 #define ARITHMETIC_H
 
 extern long program_k;
+int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
+int getFreeMemoryAddress();
 
 void convertStringToNumberAndPutInRegister(char* num){
   if(debug) printf("String to convert: %s\n", num);
@@ -49,6 +51,42 @@ void substraction(char* a, char* b) {
 
 void multiply(char* a, char* b) {
   if(debug) printf("multiply: %s %s\n", a, b);
+  int aIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
+  if (aIdNum > ids_count) {
+    convertStringToNumberAndPutInRegister(a);
+    printf("STORE %d\n", aIdNum); program_k++;
+  } else {
+    printf("LOAD %d\n", aIdNum); program_k++;
+    aIdNum = getFreeMemoryAddress();
+    printf("STORE %d\n", aIdNum); program_k++;
+  }
+  int bIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
+  if (bIdNum > ids_count) {
+    convertStringToNumberAndPutInRegister(b);
+    printf("STORE %d\n", bIdNum); program_k++;
+  } else {
+    printf("LOAD %d\n", bIdNum); program_k++;
+    bIdNum = getFreeMemoryAddress();
+    printf("STORE %d\n", bIdNum); program_k++;
+  }
+  char* result = strdup("0"); // neccessary, will be freed inside putValueToTmp
+  putValueToTmp(result);
+  printf("LOAD %d\n", aIdNum); program_k++;
+  int pointOfReturn = program_k;
+  printf("LOAD %d\n", aIdNum); program_k++;
+  printf("JZERO %ld\n", (program_k+13)); program_k++;
+      printf("DEC\n"); program_k++;
+      printf("JODD %ld\n", (program_k+4)); program_k++;
+          printf("LOAD %d\n", ids_count); program_k++;
+          printf("ADD %d\n", bIdNum); program_k++;
+          printf("STORE %d\n", ids_count); program_k++;
+      printf("LOAD %d\n", aIdNum); program_k++;
+      printf("SHR\n"); program_k++;
+      printf("STORE %d\n", aIdNum); program_k++;
+      printf("LOAD %d\n", bIdNum); program_k++;
+      printf("SHL\n"); program_k++;
+      printf("STORE %d\n", bIdNum); program_k++;
+  printf("JUMP %d\n", pointOfReturn); program_k++;
   free(a);
   free(b);
 }
