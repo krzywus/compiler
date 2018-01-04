@@ -12,6 +12,7 @@
 	long beginFound();
 	long endFound();
 	long pidentifierFound();
+	long numFound();
 %}
 
 DIGIT						[0-9]
@@ -28,36 +29,36 @@ BEGIN										return beginFound();
 END											return endFound();
 {pidentifier} 					return pidentifierFound();
 
-{num}										{ yylval.id = strdup(yytext); return num; }
-IF											{ return IF;}
-THEN										{ return THEN; }
-ELSE										{ return ELSE; }
-ENDIF										{ return ENDIF; }
-WHILE										{ return WHILE; }
-DO											{ return DO; }
-ENDWHILE								{ return ENDWHILE; }
-FOR											{ return FOR; }
-FROM										{ return FROM; }
-TO											{ return TO; }
-DOWNTO									{ return DOWNTO; }
-ENDFOR									{ return ENDFOR; }
-READ										{ return READ; }
-WRITE										{ return WRITE; }
-"["											{ return '['; }
-"]"											{ return ']'; }
-";"											{ return ';'; }
-":=" 										{ return ASSIGN; }
-">"											{ return '>'; }
-"<"											{ return '<'; }
-"=" 										{ return ISEQ; }
-"<="										{ return LEQ; }
-">="										{ return GTEQ; }
-"<>"										{ return UNEQ; }
-"+"											{ return '+'; }
-"-"											{ return '-'; }
-"*"											{ return '*'; }
-"/"											{ return '/'; }
-"%"											{ return '%'; }
+{num}										{ return numFound(); }
+IF											{ printLex(yytext); return IF;}
+THEN										{ printLex(yytext); return THEN; }
+ELSE										{ printLex(yytext); return ELSE; }
+ENDIF										{ printLex(yytext); return ENDIF; }
+WHILE										{ printLex(yytext); return WHILE; }
+DO											{ printLex(yytext); return DO; }
+ENDWHILE								{ printLex(yytext); return ENDWHILE; }
+FOR											{ printLex(yytext); return FOR; }
+FROM										{ printLex(yytext); return FROM; }
+TO											{ printLex(yytext); return TO; }
+DOWNTO									{ printLex(yytext); return DOWNTO; }
+ENDFOR									{ printLex(yytext); return ENDFOR; }
+READ										{ printLex(yytext); return READ; }
+WRITE										{ printLex(yytext); return WRITE; }
+"["											{ printLex(yytext); return '['; }
+"]"											{ printLex(yytext); return ']'; }
+";"											{ printLex(yytext); return ';'; }
+":=" 										{ printLex(yytext); return ASSIGN; }
+">"											{ printLex(yytext); return '>'; }
+"<"											{ printLex(yytext); return '<'; }
+"=" 										{ printLex(yytext); return ISEQ; }
+"<="										{ printLex(yytext); return LEQ; }
+">="										{ printLex(yytext); return GTEQ; }
+"<>"										{ printLex(yytext); return UNEQ; }
+"+"											{ printLex(yytext); return '+'; }
+"-"											{ printLex(yytext); return '-'; }
+"*"											{ printLex(yytext); return '*'; }
+"/"											{ printLex(yytext); return '/'; }
+"%"											{ printLex(yytext); return '%'; }
 
 {comment_re}
 \n
@@ -68,6 +69,12 @@ long pidentifierFound(){
 	printLex(yytext);
 	yylval.id = strdup(yytext);
 	return pidentifier;
+}
+
+long numFound() {
+	printLex(yytext);
+	yylval.id = strdup(yytext);
+	return num;
 }
 
 void lexError(char* s){
