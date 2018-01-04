@@ -1,7 +1,7 @@
 #ifndef STRING_STACK_H
 #define STRING_STACK_H
 
-#define MAXSIZE 1000
+#define MAXSIZE 100
 
 extern void yyerror(char const *);
 
@@ -41,7 +41,7 @@ char* pop (STACK *s) {
         instruction = s->stk[s->top];
         s->top = s->top - 1;
     }
-    return(instruction);
+    return instruction;
 }
 
 int isEmpty(STACK *s){
