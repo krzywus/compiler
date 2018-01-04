@@ -11,6 +11,7 @@ extern int ids_max;
 void yyerror(char const *);
 int getIdNumIfExists(char* id);
 void printCommandsForCreatingNumber(long number);
+void convertStringToNumberAndPutInRegister(char* num);
 
 void readAndStore(char* id){
   for(int i=0; i < ids_count; i++){
@@ -23,16 +24,7 @@ void readAndStore(char* id){
 }
 
 void writeVariable(char* var){
-  char *end;
-  long lnum = strtol(var, &end, 10);
-  if (end == var) {    // got identifier
-    if(debug) printf("BISON DEBUG: got identifier, not value: %s\n", var);
-    int i = getIdNumIfExists(var);
-    printf("LOAD %d\n", i);
-  } else {
-    /** Trzeba wyliczyć otrzymaną liczbę poprzez instrukcje: "ZERO -> INC -> INC/SHL". */
-    printCommandsForCreatingNumber(lnum);
-  }
+  convertStringToNumberAndPutInRegister(var);
   printf("PUT\n");
   free(var);
 }
