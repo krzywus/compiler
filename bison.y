@@ -7,6 +7,7 @@
 
   #include "errors.h"
   #include "pidentifierAdding.h"
+  #include "IO.h"
 
   int current_state = -1;
 
@@ -22,6 +23,8 @@
   void printResult();
   void addVarIdentifier(char* id);
   void checkIfIdExists(char* id);
+  void readAndStore(char* id);
+  void writeVariable(char* var);
   int getErrorCode(char const *s);
 %}
 
@@ -49,6 +52,8 @@
 %token EOL /* miscellaneous */
 
 %type <id> pidentifier
+%type <id> identifier
+%type <id> value
 
 %%
 
@@ -71,8 +76,8 @@ command:
      | WHILE condition DO commands ENDWHILE
      | FOR pidentifier FROM value TO value DO commands ENDFOR
      | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
-     | READ identifier ';'
-     | WRITE value ';'
+     | READ identifier ';'      { readAndStore($2); }
+     | WRITE value ';'          { writeVariable($2); }
 
 expression:
      value

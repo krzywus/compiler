@@ -14,10 +14,12 @@
 /* Bison */
 #define SYNTAX_ERROR "syntax error"
 #define SECOND_DECLARATION "Second identifier declaration."
-#define SYNTAX_ERROR_ERROR_CODE         2
-#define SECOND_DECLARATION_ERROR_CODE   21
+#define UNDECLARED_VARIABLE "Undeclared variable."
+#define SYNTAX_ERROR_ERROR_CODE            2
+#define SECOND_DECLARATION_ERROR_CODE      21
+#define UNDECLARED_VARIABLE_ERROR_CODE     22
 
-#define DEFAULT_ERROR_CODE              99
+#define DEFAULT_ERROR_CODE                 99
 
 
 int getErrorCode(char const *s){
@@ -26,6 +28,9 @@ int getErrorCode(char const *s){
   }
   if(strcmp(s, SECOND_DECLARATION) == 0){
     return SECOND_DECLARATION_ERROR_CODE;
+  }
+  if(strcmp(s, UNDECLARED_VARIABLE) == 0){
+    return UNDECLARED_VARIABLE_ERROR_CODE;
   }
   return DEFAULT_ERROR_CODE;
 }

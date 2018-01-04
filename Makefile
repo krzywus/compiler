@@ -25,6 +25,7 @@ compile:
 	cp sectionsKeywords.h bin/
 	cp pidentifierAdding.h bin/
 	cp constants.h bin/
+	cp IO.h bin/
 	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 
 run:

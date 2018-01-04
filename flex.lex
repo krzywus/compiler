@@ -30,18 +30,18 @@ END											return endFound();
 {pidentifier} 					return pidentifierFound();
 
 {num}										{ yylval.id = strdup(yytext); return num; }
-IF											{ BEGIN(IF); return IF;}
+IF											{ return IF;}
 THEN										{ return THEN; }
 ELSE										{ return ELSE; }
-ENDIF										{ BEGIN(0); return ENDIF; }
-WHILE										{ BEGIN(WHILE); return WHILE; }
+ENDIF										{ return ENDIF; }
+WHILE										{ return WHILE; }
 DO											{ return DO; }
-ENDWHILE								{ BEGIN(0); return ENDWHILE; }
-FOR											{ BEGIN(FOR); return FOR; }
+ENDWHILE								{ return ENDWHILE; }
+FOR											{ return FOR; }
 FROM										{ return FROM; }
 TO											{ return TO; }
 DOWNTO									{ return DOWNTO; }
-ENDFOR									{ BEGIN(0); return ENDFOR; }
+ENDFOR									{ return ENDFOR; }
 READ										{ return READ; }
 WRITE										{ return WRITE; }
 "["											{ return '['; }
