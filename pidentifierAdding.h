@@ -64,7 +64,7 @@ void checkIdsOveflow() {
     ids_max += 10;
     char** newpointer = realloc(ids, ids_max * sizeof(char*));
     if (newpointer == NULL) {
-      yyerror("Failed to reallocate memory.");
+      yyerror(REALLOCATE_FAILURE);
     } else {
         ids = newpointer;
     }
