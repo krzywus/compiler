@@ -41,4 +41,12 @@ char* concat(char* a, char* b) {
   strcat(result, b);
   return result;
 }
+
+int doesStringContainIdSeparator(char* text) {
+  char* position = strchr(text, '|');
+  if (position) {
+    return 1;
+  }
+  return 0;
+}
 #endif

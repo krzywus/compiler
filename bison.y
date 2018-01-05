@@ -126,8 +126,8 @@ value:
 
 identifier:
      pidentifier
-     | pidentifier '[' pidentifier ']'    {}
-     | pidentifier '[' num ']'
+     | pidentifier '[' pidentifier ']'    { $$ = concat($1, concat("|", $3));}
+     | pidentifier '[' num ']'            { $$ = concat($1, $3);}
 
 
 
