@@ -15,6 +15,7 @@ void assignToVariable(char* id) {
       int bAddr = getIdNumIfExists(bId);
 
       char* aId = malloc(sizeof(char)*index);
+      memset(aId, '\0', index+1);
       strncpy(aId, id, index);
       char* a0Id = concat(aId, "0");
       int a0IdAddr = getIdNumIfExists(a0Id);

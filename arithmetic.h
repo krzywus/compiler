@@ -4,15 +4,46 @@
 extern long program_k;
 int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 int getFreeMemoryAddress();
+/*
+VAR a b[5] c d BEGIN a := b[c] + b[d]; END
+*/
 
 void convertStringToNumberAndPutInRegister(char* num){
   if(debug) printf("String to convert: %s\n", num);
   char *end;
   long lnum = strtol(num, &end, 10);
   if (num == end ) { // got identifier
-    if(debug) printf("Got memory adress identifier, loading into register.\n");
-    int i = getIdNumIfExists(num);
-    printf("LOAD %d\n", i); program_k++;
+    if(debug) printf("Got memory adress identifier, loading into register: '%s'\n", num);
+    if (doesStringContainIdSeparator(num)) { // does id is of form a[b]
+        char* bId = strrchr(num, '|') + 1;
+        int index = (int)(bId - num - 1);
+        int bAddr = getIdNumIfExists(bId);
+
+        char* aId = malloc(sizeof(char)*index);
+        memset(aId, '\0', index+1);
+        strncpy(aId, num, index);
+        char* a0Id = concat(aId, "0");
+        int a0IdAddr = getIdNumIfExists(a0Id);
+
+        int a0IdAddrLen = snprintf( NULL, 0, "%d", a0IdAddr );
+        char* a0IdAddrString = malloc( a0IdAddrLen + 1 );
+        snprintf( a0IdAddrString, a0IdAddrLen + 1, "%d", a0IdAddr );
+
+        int tmpMemAddr = getFreeMemoryAddress();
+
+        convertStringToNumberAndPutInRegister(a0IdAddrString); // put a0 adress in register
+        printf("STORE %d\n", tmpMemAddr); program_k++;
+        printf("LOAD %d\n", bAddr); program_k++;
+        printf("ADD %d\n", tmpMemAddr); program_k++;
+        printf("STORE %d\n", tmpMemAddr); program_k++;
+        printf("LOADI %d\n", tmpMemAddr); program_k++;
+        free(aId);
+        free(a0Id);
+        free(a0IdAddrString);
+    } else {
+      int i = getIdNumIfExists(num);
+      printf("LOAD %d\n", i); program_k++;
+    }
   } else {
     /** Trzeba wyliczyć otrzymaną liczbę poprzez instrukcje: "ZERO -> INC -> INC/SHL". */
     if(debug) printf("Got number, calculating and putting into register.\n");
