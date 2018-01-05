@@ -22,7 +22,7 @@ void addVarIdentifier(char* id){
   if(current_state == BEGINZ_STATE){
     if(debug) printf("Current State: %d. Fixing identifiers.\n", current_state);
     ids_max = ids_count;
-    free_tmp_pointer = ids_count+1;
+    free_tmp_pointer = ids_count;
   }else if(ids_count == ids_max-1){
     if(debug) printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
     ids_max += 10;
