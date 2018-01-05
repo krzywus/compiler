@@ -15,6 +15,7 @@ void addArrayIdentifier(char* id, char* amount);
 void checkStateAndIdsOverflow();
 void checkIdsOveflow();
 void checkIfUnique(char* id);
+char* concat(char* a, char* b);
 void yyerror(char const *);
 
 void addVarIdentifier(char* id){
@@ -36,10 +37,7 @@ void addArrayIdentifier(char* id, char* amount){
     int ilen = snprintf( NULL, 0, "%d", i );
     char* inum = malloc( ilen + 1 );
     snprintf( inum, ilen + 1, "%d", i );
-    char *result = malloc(strlen(id)+strlen(inum)+1);
-    strcpy(result, id);
-    strcat(result, inum);
-    ids[ids_count] = result;
+    ids[ids_count] = concat(id, inum);
     ids_count++;
     checkIdsOveflow();
   }

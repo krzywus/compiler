@@ -30,7 +30,9 @@
   void printResult();
   void checkIfIdExists(char* id);
   void assignToVariable(char* id);
+  /* pidentifierAdding.h*/
   void addVarIdentifier(char* id);
+  void addArrayIdentifier(char* id, char* amount);
   /* IO.h */
   void readAndStore(char* id);
   void writeVariable(char* var);
@@ -75,6 +77,7 @@
 %type <id> pidentifier
 %type <id> identifier
 %type <value> value
+%type <value> num
 %type <value> expression
 
 %%
@@ -83,8 +86,8 @@ program:
      VAR vdeclarations BEGINZ commands END    { printResult(); return 0;}
 
 vdeclarations:
-     vdeclarations pidentifier               { addVarIdentifier($2); }
-     | vdeclarations pidentifier '[' num ']'
+     vdeclarations pidentifier                  { addVarIdentifier($2); }
+     | vdeclarations pidentifier '[' num ']'    { addArrayIdentifier($2, $4); }
      |
 
 commands:
@@ -123,7 +126,7 @@ value:
 
 identifier:
      pidentifier
-     | pidentifier '[' pidentifier ']'
+     | pidentifier '[' pidentifier ']'    {}
      | pidentifier '[' num ']'
 
 
