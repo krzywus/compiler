@@ -26,7 +26,7 @@ void readAndStore(char* id){
 
 void writeVariable(char* var){
   convertStringToNumberAndPutInRegister(var);
-  printf("PUT\n");
+  printf("PUT\n"); program_k++;
   free(var);
 }
 
