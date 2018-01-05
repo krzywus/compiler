@@ -71,7 +71,6 @@ void multiply(char* a, char* b) {
   }
   char* result = strdup("0"); // neccessary, will be freed inside putValueToTmp
   putValueToTmp(result);
-  printf("LOAD %d\n", aIdNum); program_k++;
   int pointOfReturn = program_k;
   printf("LOAD %d\n", aIdNum); program_k++;
   printf("JZERO %ld\n", (program_k+13)); program_k++;
@@ -97,13 +96,191 @@ void divide(char* a, char* b) {
     if(debug) printf("Dividing by zero.\n");
     printf("ZERO\nSTORE %d\n", ids_count);  program_k += 2;
   }
+
+  int remainIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
+  if (remainIdNum > ids_count) {
+    convertStringToNumberAndPutInRegister(a);
+  } else {
+    printf("LOAD %d\n", remainIdNum); program_k++;
+    remainIdNum = getFreeMemoryAddress();
+  }
+  printf("STORE %d\n", remainIdNum); program_k++;
+
+  int scaledDivisorIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
+  if (scaledDivisorIdNum > ids_count) {
+    convertStringToNumberAndPutInRegister(b);
+  } else {
+    printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+    scaledDivisorIdNum = getFreeMemoryAddress();
+  }
+  printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+
+  int resultIdNum = getFreeMemoryAddress(); // = 0
+  convertStringToNumberAndPutInRegister("0");
+  printf("STORE %d\n", resultIdNum); program_k++;
+	int multipleIdNum = getFreeMemoryAddress(); // = 1
+  convertStringToNumberAndPutInRegister("1");
+  printf("STORE %d\n", multipleIdNum); program_k++;
+
+
+  printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+  printf("JZERO %ld\n", (program_k+52)); program_k++; // dzielenie przez zero
+
+  int pointOfReturn = program_k;
+  printf("LOAD %d\n", remainIdNum); program_k++;
+  printf("SUB %d\n", scaledDivisorIdNum); program_k++;
+  printf("JZERO %ld\n", program_k+8); program_k++; //while (scaledDivisor < remain=dividend)
+      printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+      printf("SHL\n"); program_k++;
+      printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+      printf("LOAD %d\n", multipleIdNum); program_k++;
+      printf("SHL\n"); program_k++;
+      printf("STORE %d\n", multipleIdNum); program_k++;
+      printf("JUMP %d\n", pointOfReturn); program_k++; // end while
+
+  // powtórz raz pętlę, żeby zrobić do..while
+  printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+  printf("INC\n"); program_k++;
+  printf("SUB %d\n", remainIdNum); program_k++;
+  printf("JZERO %ld\n", program_k+4); program_k++; // do ifa
+  printf("DEC\n"); program_k++;
+  printf("JZERO %ld\n", program_k+2); program_k++; // do ifa
+  printf("JUMP %ld\n", program_k+7); program_k++; // omijamy ifa
+      // if (remain >= scaled_divisor)
+      printf("LOAD %d\n", remainIdNum); program_k++;
+      printf("SUB %d\n", scaledDivisorIdNum); program_k++;
+      printf("STORE %d\n", remainIdNum); program_k++;
+      printf("LOAD %d\n", resultIdNum); program_k++;
+      printf("ADD %d\n", multipleIdNum); program_k++;
+      printf("STORE %d\n", resultIdNum); program_k++;
+  printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+  printf("SHR\n"); program_k++;
+  printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+  printf("LOAD %d\n", multipleIdNum); program_k++;
+  printf("SHR\n"); program_k++;
+  printf("STORE %d\n", multipleIdNum); program_k++;
+  // while (multiple != 0)
+  pointOfReturn = program_k;
+  printf("LOAD %d\n", multipleIdNum); program_k++; // unnecessary?
+  printf("JZERO %ld\n", program_k+21); program_k++; // while
+      printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+      printf("INC\n"); program_k++;
+      printf("SUB %d\n", remainIdNum); program_k++;
+      printf("JZERO %ld\n", program_k+4); program_k++; // do ifa
+      printf("DEC\n"); program_k++;
+      printf("JZERO %ld\n", program_k+2); program_k++; // do ifa
+      printf("JUMP %ld\n", program_k+7); program_k++; // omijamy ifa
+          // if (remain >= scaled_divisor)
+          printf("LOAD %d\n", remainIdNum); program_k++;
+          printf("SUB %d\n", scaledDivisorIdNum); program_k++;
+          printf("STORE %d\n", remainIdNum); program_k++;
+          printf("LOAD %d\n", resultIdNum); program_k++;
+          printf("ADD %d\n", multipleIdNum); program_k++;
+          printf("STORE %d\n", resultIdNum); program_k++;
+      printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+      printf("SHR\n"); program_k++;
+      printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+      printf("LOAD %d\n", multipleIdNum); program_k++;
+      printf("SHR\n"); program_k++;
+      printf("STORE %d\n", multipleIdNum); program_k++;
+      printf("JUMP %d\n", pointOfReturn); program_k++;
+
+  printf("LOAD %d\n", resultIdNum); program_k++;
+  printf("STORE %d\n", ids_count); program_k++;
   free(a);
   free(b);
 }
 
-
 void mod(char* a, char* b) {
-	printf("mod: %s %s\n", a, b);
+	if(debug) printf("mod: %s %s\n", a, b);
+  if (strcmp(b, "0") == 0) {
+    if(debug) printf("Modulo zero.\n");
+    printf("ZERO\nSTORE %d\n", ids_count);  program_k += 2;
+  }
+
+  int remainIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
+  if (remainIdNum > ids_count) {
+    convertStringToNumberAndPutInRegister(a);
+  } else {
+    printf("LOAD %d\n", remainIdNum); program_k++;
+    remainIdNum = getFreeMemoryAddress();
+  }
+  printf("STORE %d\n", remainIdNum); program_k++;
+
+  int scaledDivisorIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
+  if (scaledDivisorIdNum > ids_count) {
+    convertStringToNumberAndPutInRegister(b);
+  } else {
+    printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+    scaledDivisorIdNum = getFreeMemoryAddress();
+  }
+  printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+
+  int resultIdNum = getFreeMemoryAddress(); // = 0
+  convertStringToNumberAndPutInRegister("0");
+  printf("STORE %d\n", resultIdNum); program_k++;
+	int multipleIdNum = getFreeMemoryAddress(); // = 1
+  convertStringToNumberAndPutInRegister("1");
+  printf("STORE %d\n", multipleIdNum); program_k++;
+
+  printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+  printf("JZERO %ld\n", (program_k+52)); program_k++; // dzielenie przez zero
+
+  int pointOfReturn = program_k;
+  printf("LOAD %d\n", remainIdNum); program_k++;
+  printf("SUB %d\n", scaledDivisorIdNum); program_k++;
+  printf("JZERO %ld\n", program_k+8); program_k++; //while (scaledDivisor < remain=dividend)
+      printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+      printf("SHL\n"); program_k++;
+      printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+      printf("LOAD %d\n", multipleIdNum); program_k++;
+      printf("SHL\n"); program_k++;
+      printf("STORE %d\n", multipleIdNum); program_k++;
+      printf("JUMP %d\n", pointOfReturn); program_k++; // end while
+
+  // powtórz raz pętlę, żeby zrobić do..while
+  printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+  printf("INC\n"); program_k++;
+  printf("SUB %d\n", remainIdNum); program_k++;
+  printf("JZERO %ld\n", program_k+4); program_k++; // do ifa
+  printf("DEC\n"); program_k++;
+  printf("JZERO %ld\n", program_k+2); program_k++; // do ifa
+  printf("JUMP %ld\n", program_k+4); program_k++; // omijamy ifa
+      // if (remain >= scaled_divisor)
+      printf("LOAD %d\n", remainIdNum); program_k++;
+      printf("SUB %d\n", scaledDivisorIdNum); program_k++;
+      printf("STORE %d\n", remainIdNum); program_k++;
+  printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+  printf("SHR\n"); program_k++;
+  printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+  printf("LOAD %d\n", multipleIdNum); program_k++;
+  printf("SHR\n"); program_k++;
+  printf("STORE %d\n", multipleIdNum); program_k++;
+  // while (multiple != 0)
+  pointOfReturn = program_k;
+  printf("LOAD %d\n", multipleIdNum); program_k++; // unnecessary?
+  printf("JZERO %ld\n", program_k+18); program_k++; // while
+      printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+      printf("INC\n"); program_k++;
+      printf("SUB %d\n", remainIdNum); program_k++;
+      printf("JZERO %ld\n", program_k+4); program_k++; // do ifa
+      printf("DEC\n"); program_k++;
+      printf("JZERO %ld\n", program_k+2); program_k++; // do ifa
+      printf("JUMP %ld\n", program_k+4); program_k++; // omijamy ifa
+          // if (remain >= scaled_divisor)
+          printf("LOAD %d\n", remainIdNum); program_k++;
+          printf("SUB %d\n", scaledDivisorIdNum); program_k++;
+          printf("STORE %d\n", remainIdNum); program_k++;
+      printf("LOAD %d\n", scaledDivisorIdNum); program_k++;
+      printf("SHR\n"); program_k++;
+      printf("STORE %d\n", scaledDivisorIdNum); program_k++;
+      printf("LOAD %d\n", multipleIdNum); program_k++;
+      printf("SHR\n"); program_k++;
+      printf("STORE %d\n", multipleIdNum); program_k++;
+      printf("JUMP %d\n", pointOfReturn); program_k++;
+
+  printf("LOAD %d\n", remainIdNum); program_k++;
+  printf("STORE %d\n", ids_count); program_k++;
   free(a);
   free(b);
 }
