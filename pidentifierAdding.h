@@ -41,16 +41,16 @@ void addArrayIdentifier(char* id, char* amount){
     ids_count++;
     checkIdsOveflow();
   }
+  checkStateAndIdsOverflow();
   free(id);
   free(amount);
-  checkStateAndIdsOverflow();
 }
 
 void checkStateAndIdsOverflow() {
+  free_tmp_pointer = ids_count;
   if(current_state == BEGINZ_STATE){
     if(debug) printf("Current State: %d. Fixing identifiers.\n", current_state);
     ids_max = ids_count;
-    free_tmp_pointer = ids_count;
   }else {
     checkIdsOveflow();
   }
@@ -68,6 +68,7 @@ void checkIdsOveflow() {
     }
   }
 }
+
 void checkIfUnique(char* id){
     for(int i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
