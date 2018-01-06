@@ -8,6 +8,7 @@
 	#include <vector>
   #include <string>
   #include <iostream>
+  #include <sstream>
 
   #include "commands.h"
   #include "errors.h"
@@ -16,6 +17,7 @@
   #include "numberCreation.h"
   #include "assignment.h"
   #include "arithmetic.h"
+  #include "conditions.h"
 
   using namespace std;
 
@@ -53,6 +55,15 @@
   void divide(char* a, char* b);
   void multiply(char* a, char* b);
   void mod(char* a, char* b);
+  /* conditions.h */
+  void condISEQ(string a, string b);
+  void condUNEQ(string a, string b);
+  void condLESS(string a, string b);
+  void condGREATER(string a, string b);
+  void condLEQ(string a, string b);
+  void condGTEQ(string a, string b);
+  void ifEnded(int modifier);
+  void elseEnded();
 %}
 
 %union{
@@ -101,8 +112,13 @@ commands:
 
 command:
      identifier ASSIGN expression ';'                                 { assignToVariable($1); }
-     | IF condition THEN commands ELSE commands ENDIF
-     | IF condition THEN commands ENDIF
+     | IF condition THEN commands ELSE {  ifEnded(1);
+                                          commands.push_back("COND JUMP OVER\n"); program_k++;
+                                          commands.push_back("COND BEGIN\n");
+                                        }
+                                  commands  {  elseEnded();
+                                  } ENDIF
+     | IF condition THEN commands ENDIF                               { ifEnded(0); }
      | WHILE condition DO commands ENDWHILE
      | FOR pidentifier FROM value TO value DO commands ENDFOR
      | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
@@ -118,12 +134,12 @@ expression:
      | value '%' value        { mod($1, $3); }
 
 condition:
-     value ISEQ value
-     | value UNEQ value
-     | value '<' value
-     | value '>' value
-     | value LEQ value
-     | value GTEQ value
+     value ISEQ value         { condISEQ($1, $3); }
+     | value UNEQ value       { condUNEQ($1, $3); }
+     | value '<' value        { condLESS($1, $3); }
+     | value '>' value        { condGREATER($1, $3); }
+     | value LEQ value        { condLEQ($1, $3); }
+     | value GTEQ value       { condGTEQ($1, $3); }
 
 value:
      num
@@ -152,25 +168,26 @@ void initialize(){
   ids_count = 0;
   ids_max = 20;
   ids = (char**) malloc(ids_max * sizeof(char*));
-  if(debug) printf("Allocating stack for creating number.\n");
-  /*stack = (char*) malloc(sizeof(STACK)*100);*/
-  if(debug) printf("Stack initialized successfully.\n");
 }
 
 void finalize(){
-  if(debug) printf("Identifiers: ");
+  if(bisonDebug) printf("Identifiers: ");
   for(int i=0; i < ids_count; i++){
-    if(debug) printf("%s ", ids[i]);
+    if(bisonDebug) printf("%s ", ids[i]);
     free(ids[i]);
   }
-  if(debug) printf("\n");
+  if(bisonDebug) printf("\n");
   free(ids);
 }
 
 void printResult(){
   HALT();
-  for(int i=i; i < commands.size(); i++){
-    cout << commands[i];
+  for(int i=0; i < commands.size(); i++){
+    if(printK) {
+      cout << i << " " << commands[i];
+    } else {
+      cout << commands[i];
+    }
   }
 }
 

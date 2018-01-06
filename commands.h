@@ -1,8 +1,6 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <sstream>
-
 using namespace std;
 
 extern vector<string> commands;
