@@ -35,7 +35,7 @@ void addArrayIdentifier(char* id, char* amount){
   }
   for (int i = 0; i < intAmount; i++) {
     int ilen = snprintf( NULL, 0, "%d", i );
-    char* inum = malloc( ilen + 1 );
+    char* inum = (char*) malloc( ilen + 1 );
     snprintf( inum, ilen + 1, "%d", i );
     ids[ids_count] = concat(id, inum);
     ids_count++;
@@ -60,7 +60,7 @@ void checkIdsOveflow() {
   if(ids_count == ids_max-1){
     if(debug) printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
     ids_max += 10;
-    char** newpointer = realloc(ids, ids_max * sizeof(char*));
+    char** newpointer = (char**) realloc(ids, ids_max * sizeof(char*));
     if (newpointer == NULL) {
       yyerror(REALLOCATE_FAILURE);
     } else {

@@ -1,14 +1,12 @@
 #ifndef NUMBER_CREATION_H
 #define NUMBER_CREATION_H
 
-#include "stringStack.h"
+#include <stack>
 
-extern void push (STACK *s, char* instruction);
-extern char* pop (STACK *s);
-extern int isEmpty(STACK *s);
+using namespace std;
 
 extern long program_k;
-extern STACK* stack;
+stack<char*> tmp_stk;
 
 void printCommandsForCreatingNumber(long number) {
   if(debug) printf("Preparing to print commands for creating: '%ld'\n", number);
@@ -20,17 +18,18 @@ void printCommandsForCreatingNumber(long number) {
       if(debug) printf("number: %lu ", number);
       if (number%2 == 0) {
         number = number / 2;
-        push(stack, "SHL\n"); program_k++;
+        tmp_stk.push("SHL\n"); program_k++;
       } else {
         number--;
-        push(stack, "INC\n"); program_k++;
+        tmp_stk.push("INC\n"); program_k++;
       }
   }
-  push(stack, "INC\n"); program_k++;
-  push(stack, "ZERO\n"); program_k++;
+  tmp_stk.push("INC\n"); program_k++;
+  tmp_stk.push("ZERO\n"); program_k++;
   if(debug) printf("\nInstructions ready, printing in progress.\n");
-  while(!isEmpty(stack)) {
-    char* instruction = pop(stack);
+  while(!tmp_stk.empty()) {
+    char* instruction = tmp_stk.top();
+    tmp_stk.pop();
     printf("%s", instruction);
   }
 }

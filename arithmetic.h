@@ -16,14 +16,14 @@ void convertStringToNumberAndPutInRegister(char* num){
         int index = (int)(bId - num - 1);
         int bAddr = getIdNumIfExists(bId);
 
-        char* aId = malloc(sizeof(char)*index);
+        char* aId = (char*) malloc(sizeof(char)*index);
         memset(aId, '\0', index+1);
         strncpy(aId, num, index);
         char* a0Id = concat(aId, "0");
         int a0IdAddr = getIdNumIfExists(a0Id);
 
         int a0IdAddrLen = snprintf( NULL, 0, "%d", a0IdAddr );
-        char* a0IdAddrString = malloc( a0IdAddrLen + 1 );
+        char* a0IdAddrString = (char*) malloc( a0IdAddrLen + 1 );
         snprintf( a0IdAddrString, a0IdAddrLen + 1, "%d", a0IdAddr );
 
         int tmpMemAddr = getFreeMemoryAddress();

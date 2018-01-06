@@ -4,6 +4,7 @@
   #include <stdlib.h>
   #include <math.h>
   #include <string.h>
+  #include <stack>
 
   #include "commands.h"
   #include "errors.h"
@@ -13,12 +14,13 @@
   #include "assignment.h"
   #include "arithmetic.h"
 
+  using namespace std;
+
   int current_state = -1;
 
   int ids_max = 0;
   int ids_count = 0;
   char** ids;
-  STACK *stack;
   long program_k;
   long code_k;
   int free_tmp_pointer;
@@ -46,9 +48,6 @@
   void divide(char* a, char* b);
   void multiply(char* a, char* b);
   void mod(char* a, char* b);
-  /* stringStack.h*/
-  extern void initStack(STACK *s);
-  extern void finalizeStack(STACK *s);
 %}
 
 %union{
@@ -147,10 +146,9 @@ void initialize(){
   program_k = 0;
   ids_count = 0;
   ids_max = 20;
-  ids = malloc(ids_max * sizeof(char*));
+  ids = (char**) malloc(ids_max * sizeof(char*));
   if(debug) printf("Allocating stack for creating number.\n");
-  stack = malloc(sizeof(STACK)*100);
-  initStack(stack);
+  /*stack = (char*) malloc(sizeof(STACK)*100);*/
   if(debug) printf("Stack initialized successfully.\n");
 }
 
@@ -162,7 +160,6 @@ void finalize(){
   }
   if(debug) printf("\n");
   free(ids);
-finalizeStack(stack);
 }
 
 void printResult(){

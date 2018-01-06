@@ -22,10 +22,9 @@ compile:
 	cp constants.h bin/
 	cp IO.h bin/
 	cp numberCreation.h bin/
-	cp stringStack.h bin/
 	cp assignment.h bin/
 	cp arithmetic.h bin/
-	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
+	g++ -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 
 run:
 	$(MAKE) both
