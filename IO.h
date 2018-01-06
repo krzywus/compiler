@@ -6,6 +6,7 @@ extern char** ids;
 extern int ids_count;
 extern int ids_max;
 extern long program_k;
+extern vector<string> initializedVariables;
 
 void yyerror(char const *);
 int getIdNumIfExists(char* id);
@@ -44,6 +45,7 @@ void readAndStore(char* id){
       if(strcmp(id, ids[i]) == 0){
         GET();
         STORE(i);
+        initializedVariables.push_back(id);
         return;
       }
     }

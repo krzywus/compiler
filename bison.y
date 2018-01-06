@@ -27,6 +27,7 @@
 
 	vector<string> commands;
   map<string, int> forLoopsVariables;
+  vector<string> initializedVariables;
 
   int ids_max = 0;
   int ids_count = 0;

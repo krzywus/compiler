@@ -1,8 +1,12 @@
 #ifndef ARITHMETIC_H
 #define ARITHMETIC_H
 
+#include<algorithm>
+
+using namespace std;
 
 extern map<string, int> forLoopsVariables;
+extern vector<string> initializedVariables;
 extern long program_k;
 int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 int getFreeMemoryAddress();
@@ -43,6 +47,9 @@ void convertStringToNumberAndPutInRegister(char* num){
       if(forLoopsVariables.find(num) != forLoopsVariables.end()) {
          LOAD(forLoopsVariables[num]);
          return;
+      }
+      if(find(initializedVariables.begin(), initializedVariables.end(), num) == initializedVariables.end()) {
+         yyerror(UNINITIALIZED_VARIABLE);
       }
       int i = getIdNumIfExists(num);
       LOAD(i);

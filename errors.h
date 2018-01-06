@@ -19,6 +19,8 @@
 #define STACK_OVERFLOW "Stack is Full."
 #define ZERO_ARRAY_DECLARATION "Array declaration of size 0."
 #define REALLOCATE_FAILURE "Failed to reallocate memory."
+#define UNINITIALIZED_VARIABLE "Variable was not initialized before usage."
+
 #define SYNTAX_ERROR_ERROR_CODE            2
 #define SECOND_DECLARATION_ERROR_CODE      21
 #define UNDECLARED_VARIABLE_ERROR_CODE     22
@@ -26,6 +28,7 @@
 #define STACK_OVERFLOW_ERROR_CODE          24
 #define ZERO_ARRAY_DECLARATION_ERROR_CODE  25
 #define REALLOCATE_FAILURE_ERROR_CODE      26
+#define UNINITIALIZED_VARIABLE_ERROR_CODE  27
 
 #define DEFAULT_ERROR_CODE                 99
 
@@ -51,6 +54,9 @@ int getErrorCode(char const *s){
   }
   if(strcmp(s, REALLOCATE_FAILURE) == 0){
     return REALLOCATE_FAILURE_ERROR_CODE;
+  }
+  if(strcmp(s, UNINITIALIZED_VARIABLE) == 0){
+    return UNINITIALIZED_VARIABLE_ERROR_CODE;
   }
   return DEFAULT_ERROR_CODE;
 }

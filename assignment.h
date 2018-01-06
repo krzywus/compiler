@@ -3,6 +3,7 @@
 
 extern long program_k;
 extern int getIdNumIfExists(char* id);
+extern vector<string> initializedVariables;
 
 
 void assignToVariable(char* id) {
@@ -38,6 +39,7 @@ void assignToVariable(char* id) {
       free(a0IdAddrString);
   } else {
       assignId = getIdNumIfExists(id);
+      initializedVariables.push_back(id);
       STORE(assignId);
   }
   free(id);
