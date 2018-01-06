@@ -67,6 +67,9 @@
   void endElse();
   /* loops.h */
   void endWhile();
+  void forFromTo(char* id, char* from, char* to);
+  void forFromDownTo(char* id, char* from, char* to);
+  void endFor();
 %}
 
 %union{
@@ -122,12 +125,12 @@ command:
                                   commands  {  endElse();
                                   } ENDIF
      | IF condition THEN commands ENDIF                                 { endIf(0); }
-     | WHILE {
-                commands.push_back("WHILE START\n"); 
-              }
+     | WHILE                                                      { commands.push_back("WHILE START\n");}
        condition DO commands ENDWHILE                             { endWhile(); }
-     | FOR pidentifier FROM value TO value DO commands ENDFOR
-     | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+     | FOR pidentifier FROM value TO value DO                     { forFromTo($2, $4, $6);}
+       commands ENDFOR                                            { endFor(); }
+     | FOR pidentifier FROM value DOWNTO value DO                 { forFromDownTo($2, $4, $6); }
+        commands ENDFOR                                           { endFor(); }
      | READ identifier ';'      { readAndStore($2); }
      | WRITE value ';'          { writeVariable($2); }
 

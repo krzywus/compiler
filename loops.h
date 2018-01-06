@@ -13,9 +13,7 @@ void endWhile(){
   int loopStart = -1;
   int max_k = 0;
   for (int i = commands.size()-1; i > 0; i--) {
-    // if (commands[i].find("WHILE START") == string::npos) {
       max_k++;
-    // }
   }
   max_k++;
   for (int i = commands.size()-1; i > 0; i--) {
@@ -57,6 +55,19 @@ void endWhile(){
     }
   }
   JUMP(loopStart);
+}
+
+
+void forFromTo(char* id, char* from, char* to){
+
+}
+
+void forFromDownTo(char* id, char* from, char* to){
+
+}
+
+void endFor(){
+
 }
 
 
