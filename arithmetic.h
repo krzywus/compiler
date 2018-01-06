@@ -2,6 +2,7 @@
 #define ARITHMETIC_H
 
 
+extern map<string, int> forLoopsVariables;
 extern long program_k;
 int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 int getFreeMemoryAddress();
@@ -39,6 +40,10 @@ void convertStringToNumberAndPutInRegister(char* num){
         free(a0Id);
         free(a0IdAddrString);
     } else {
+      if(forLoopsVariables.find(num) != forLoopsVariables.end()) {
+         LOAD(forLoopsVariables[num]);
+         return;
+      }
       int i = getIdNumIfExists(num);
       LOAD(i);
     }

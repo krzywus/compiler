@@ -9,6 +9,7 @@
   #include <string>
   #include <iostream>
   #include <sstream>
+  #include <map>
 
   #include "commands.h"
   #include "errors.h"
@@ -25,6 +26,7 @@
   int current_state = -1;
 
 	vector<string> commands;
+  map<string, int> forLoopsVariables;
 
   int ids_max = 0;
   int ids_count = 0;
