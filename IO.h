@@ -11,7 +11,6 @@ extern long program_k;
 
 void yyerror(char const *);
 int getIdNumIfExists(char* id);
-void printCommandsForCreatingNumber(long number);
 void convertStringToNumberAndPutInRegister(char* num);
 
 void readAndStore(char* id){

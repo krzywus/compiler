@@ -169,6 +169,9 @@ void finalize(){
 
 void printResult(){
   HALT();
+  for(int i=i; i < commands.size(); i++){
+    cout << commands[i];
+  }
 }
 
 /* Called by yyparse on error.  */

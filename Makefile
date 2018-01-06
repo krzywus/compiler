@@ -24,7 +24,7 @@ compile:
 	cp numberCreation.h bin/
 	cp assignment.h bin/
 	cp arithmetic.h bin/
-	g++ -g bin/lex.yy.c bin/bison.yy.h -ll -lm -Wno-write-strings
+	g++ -std=c++11 -g bin/lex.yy.c bin/bison.yy.h -ll -lm -Wno-write-strings
 
 run:
 	$(MAKE) both
