@@ -1,7 +1,6 @@
 #ifndef ARITHMETIC_H
 #define ARITHMETIC_H
 
-#include<algorithm>
 
 using namespace std;
 

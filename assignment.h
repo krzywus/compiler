@@ -4,6 +4,7 @@
 extern long program_k;
 extern int getIdNumIfExists(char* id);
 extern vector<string> initializedVariables;
+extern map<string, int> forLoopsVariables;
 
 
 void assignToVariable(char* id) {
@@ -12,6 +13,11 @@ void assignToVariable(char* id) {
   int assignId = -1;
   if (doesStringContainIdSeparator(id)) { // does id is of form a[b]
       char* bId = strrchr(id, '|') + 1;
+      if(forLoopsVariables.find(bId) == forLoopsVariables.end()) {
+        if(find(initializedVariables.begin(), initializedVariables.end(), bId) == initializedVariables.end()) {
+          yyerror(UNINITIALIZED_VARIABLE);
+        }
+      }
       int index = (int)(bId - id - 1);
       int bAddr = getIdNumIfExists(bId);
 

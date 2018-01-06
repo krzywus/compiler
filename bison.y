@@ -10,6 +10,7 @@
   #include <iostream>
   #include <sstream>
   #include <map>
+  #include <algorithm>
 
   #include "commands.h"
   #include "errors.h"
