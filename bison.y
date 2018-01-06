@@ -18,6 +18,7 @@
   #include "assignment.h"
   #include "arithmetic.h"
   #include "conditions.h"
+  #include "loops.h"
 
   using namespace std;
 
@@ -64,6 +65,8 @@
   void condGTEQ(string a, string b);
   void endIf(int modifier);
   void endElse();
+  /* loops.h */
+  void endWhile();
 %}
 
 %union{
@@ -118,8 +121,11 @@ command:
                                         }
                                   commands  {  endElse();
                                   } ENDIF
-     | IF condition THEN commands ENDIF                               { endIf(0); }
-     | WHILE condition DO commands ENDWHILE
+     | IF condition THEN commands ENDIF                                 { endIf(0); }
+     | WHILE {
+                commands.push_back("WHILE START\n"); 
+              }
+       condition DO commands ENDWHILE                             { endWhile(); }
      | FOR pidentifier FROM value TO value DO commands ENDFOR
      | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
      | READ identifier ';'      { readAndStore($2); }
