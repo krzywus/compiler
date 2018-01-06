@@ -15,6 +15,7 @@ void assignToVariable(char* id) {
       char* bId = strrchr(id, '|') + 1;
       if(forLoopsVariables.find(bId) == forLoopsVariables.end()) {
         if(find(initializedVariables.begin(), initializedVariables.end(), bId) == initializedVariables.end()) {
+          if(bisonDebug) cout << "UNINITIALIZED_VARIABLE: " << bId << endl;
           yyerror(UNINITIALIZED_VARIABLE);
         }
       }

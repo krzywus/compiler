@@ -48,7 +48,17 @@ void convertStringToNumberAndPutInRegister(char* num){
          return;
       }
       if(find(initializedVariables.begin(), initializedVariables.end(), num) == initializedVariables.end()) {
-         yyerror(UNINITIALIZED_VARIABLE);
+        // arrays could be initialized using other variables, which is hard to detect
+        int flag = 0;
+        for(int i=0; num[i] != '\0'; i++) {
+          if(num[i]=='0'||num[i]=='1'||num[i]=='2'||num[i]=='3'||num[i]=='5'||num[i]=='6'||num[i]=='7'||num[i]=='8'||num[i]=='9') {
+            flag++; break;
+          }
+        }
+        if (flag == 0) {
+          if(bisonDebug) cout << "UNINITIALIZED_VARIABLE: " << num << endl;
+          yyerror(UNINITIALIZED_VARIABLE);
+        }
       }
       int i = getIdNumIfExists(num);
       LOAD(i);
