@@ -5,6 +5,9 @@
   #include <math.h>
   #include <string.h>
   #include <stack>
+	#include <vector>
+  #include <string>
+  #include <iostream>
 
   #include "commands.h"
   #include "errors.h"
@@ -17,6 +20,8 @@
   using namespace std;
 
   int current_state = -1;
+
+	vector<string> commands;
 
   int ids_max = 0;
   int ids_count = 0;
