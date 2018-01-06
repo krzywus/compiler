@@ -6,7 +6,7 @@ using namespace std;
 extern vector<string> commands;
 void convertStringToNumberAndPutInRegister(char* num);
 
-void ifEnded(int modifier){
+void endIf(int modifier){
   int beginFound = 0;
   if(bisonDebug) cout << "ENDING IF" << endl;
   if(bisonDebug) cout << commands.size() << endl;
@@ -40,7 +40,7 @@ void ifEnded(int modifier){
   }
 }
 
-void elseEnded(){
+void endElse(){
   int beginFound = 0;
   if(bisonDebug) cout << "ENDING ELSE, k: " << program_k <<  endl;
   int max_k = 0;

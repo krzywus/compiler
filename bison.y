@@ -62,8 +62,8 @@
   void condGREATER(string a, string b);
   void condLEQ(string a, string b);
   void condGTEQ(string a, string b);
-  void ifEnded(int modifier);
-  void elseEnded();
+  void endIf(int modifier);
+  void endElse();
 %}
 
 %union{
@@ -112,13 +112,13 @@ commands:
 
 command:
      identifier ASSIGN expression ';'                                 { assignToVariable($1); }
-     | IF condition THEN commands ELSE {  ifEnded(1);
+     | IF condition THEN commands ELSE {  endIf(1);
                                           commands.push_back("COND JUMP OVER\n"); program_k++;
                                           commands.push_back("COND BEGIN\n");
                                         }
-                                  commands  {  elseEnded();
+                                  commands  {  endElse();
                                   } ENDIF
-     | IF condition THEN commands ENDIF                               { ifEnded(0); }
+     | IF condition THEN commands ENDIF                               { endIf(0); }
      | WHILE condition DO commands ENDWHILE
      | FOR pidentifier FROM value TO value DO commands ENDFOR
      | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
