@@ -33,18 +33,20 @@ void readAndStore(char* id){
     int tmpMemAddr = getFreeMemoryAddress();
 
     convertStringToNumberAndPutInRegister(a0IdAddrString); // put a0 adress in register
-    printf("STORE %d\n", tmpMemAddr); program_k++;
-    printf("LOAD %d\n", bAddr); program_k++;
-    printf("ADD %d\n", tmpMemAddr); program_k++;
-    printf("STORE %d\n", tmpMemAddr); program_k++;
+    STORE(tmpMemAddr);
+    LOAD(bAddr);
+    ADD(tmpMemAddr);
+    STORE(tmpMemAddr);
     free(aId);
     free(a0Id);
     free(a0IdAddrString);
-    printf("GET\nSTOREI %d\n", tmpMemAddr); program_k += 2;
+    GET();
+    STOREI(tmpMemAddr);
   } else {
     for(int i=0; i < ids_count; i++){
       if(strcmp(id, ids[i]) == 0){
-        printf("GET\nSTORE %d\n", i); program_k += 2;
+        GET();
+        STORE(i);
         return;
       }
     }
@@ -54,7 +56,7 @@ void readAndStore(char* id){
 
 void writeVariable(char* var){
   convertStringToNumberAndPutInRegister(var);
-  printf("PUT\n"); program_k++;
+  PUT();
   free(var);
 }
 

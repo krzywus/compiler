@@ -26,7 +26,8 @@ void printCommandsForCreatingNumber(long number) {
         push(stack, "INC\n"); program_k++;
       }
   }
-  push(stack, "ZERO\nINC\n"); program_k += 2;
+  push(stack, "INC\n"); program_k++;
+  push(stack, "ZERO\n"); program_k++;
   if(debug) printf("\nInstructions ready, printing in progress.\n");
   while(!isEmpty(stack)) {
     char* instruction = pop(stack);

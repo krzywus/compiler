@@ -7,7 +7,7 @@ extern int getIdNumIfExists(char* id);
 
 void assignToVariable(char* id) {
   if(debug) printf("assign to: '%s'\n", id);
-  printf("LOAD %d\n", ids_count); program_k++;
+  LOAD(ids_count);
   int assignId = -1;
   if (doesStringContainIdSeparator(id)) { // does id is of form a[b]
       char* bId = strrchr(id, '|') + 1;
@@ -27,18 +27,18 @@ void assignToVariable(char* id) {
       int tmpMemAddr = getFreeMemoryAddress();
 
       convertStringToNumberAndPutInRegister(a0IdAddrString); // put a0 adress in register
-      printf("STORE %d\n", tmpMemAddr); program_k++;
-      printf("LOAD %d\n", bAddr); program_k++;
-      printf("ADD %d\n", tmpMemAddr); program_k++;
-      printf("STORE %d\n", tmpMemAddr); program_k++;
-      printf("LOAD %d\n", ids_count); program_k++;
-      printf("STOREI %d\n", tmpMemAddr); program_k++;
+      STORE(tmpMemAddr);
+      LOAD(bAddr);
+      ADD(tmpMemAddr);
+      STORE(tmpMemAddr);
+      LOAD(ids_count);
+      STOREI(tmpMemAddr);
       free(aId);
       free(a0Id);
       free(a0IdAddrString);
   } else {
       assignId = getIdNumIfExists(id);
-      printf("STORE %d\n", assignId); program_k++;
+      STORE(assignId);
   }
   free(id);
 }

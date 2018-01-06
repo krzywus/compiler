@@ -166,7 +166,7 @@ finalizeStack(stack);
 }
 
 void printResult(){
-  printf("HALT\n");
+  HALT();
 }
 
 /* Called by yyparse on error.  */
