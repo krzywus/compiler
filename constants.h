@@ -5,6 +5,8 @@
 #define BEGINZ_STATE 12
 #define END_STATE 13
 
+using namespace std;
+
 extern int ids_count;
 extern char** ids;
 extern int free_tmp_pointer;

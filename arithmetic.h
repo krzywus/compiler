@@ -1,6 +1,7 @@
 #ifndef ARITHMETIC_H
 #define ARITHMETIC_H
 
+
 extern long program_k;
 int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 int getFreeMemoryAddress();
