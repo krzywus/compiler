@@ -15,6 +15,7 @@ bison:
 		bison -o bin/bison.yy.h bison.y
 
 compile:
+	cp commands.h bin/
 	cp errors.h bin/
 	cp sectionsKeywords.h bin/
 	cp pidentifierAdding.h bin/

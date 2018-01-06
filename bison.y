@@ -5,6 +5,7 @@
   #include <math.h>
   #include <string.h>
 
+  #include "commands.h"
   #include "errors.h"
   #include "pidentifierAdding.h"
   #include "IO.h"
