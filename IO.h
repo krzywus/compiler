@@ -1,8 +1,6 @@
 #ifndef IO_H
 #define IO_H
 
-extern int debug;
-
 extern int current_state;
 extern char** ids;
 extern int ids_count;

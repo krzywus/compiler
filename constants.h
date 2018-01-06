@@ -10,6 +10,8 @@ using namespace std;
 extern int ids_count;
 extern char** ids;
 extern int free_tmp_pointer;
+extern int bisonDebug;
+extern int printK;
 
 void yyerror (char const *);
 

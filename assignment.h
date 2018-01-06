@@ -6,7 +6,7 @@ extern int getIdNumIfExists(char* id);
 
 
 void assignToVariable(char* id) {
-  if(debug) printf("assign to: '%s'\n", id);
+  if(bisonDebug) printf("assign to: '%s'\n", id);
   LOAD(ids_count);
   int assignId = -1;
   if (doesStringContainIdSeparator(id)) { // does id is of form a[b]

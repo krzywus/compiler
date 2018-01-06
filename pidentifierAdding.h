@@ -3,7 +3,6 @@
 
 #include "constants.h"
 
-extern int debug;
 extern int current_state;
 extern char** ids;
 extern int ids_count;
@@ -19,7 +18,7 @@ char* concat(char* a, char* b);
 void yyerror(char const *);
 
 void addVarIdentifier(char* id){
-  if(debug) printf("BISON: pidentifier found '%s'\n", id);
+  if(bisonDebug) printf("BISON: pidentifier found '%s'\n", id);
   checkIfUnique(id);
   ids[ids_count] = id;
   ids_count++;
@@ -27,7 +26,7 @@ void addVarIdentifier(char* id){
 }
 
 void addArrayIdentifier(char* id, char* amount){
-  if(debug) printf("BISON: array pidentifier found '%s', size: %s\n", id, amount);
+  if(bisonDebug) printf("BISON: array pidentifier found '%s', size: %s\n", id, amount);
   checkIfUnique(id);
   int intAmount = atoi(amount);
   if (intAmount == 0) {
@@ -49,7 +48,7 @@ void addArrayIdentifier(char* id, char* amount){
 void checkStateAndIdsOverflow() {
   free_tmp_pointer = ids_count;
   if(current_state == BEGINZ_STATE){
-    if(debug) printf("Current State: %d. Fixing identifiers.\n", current_state);
+    if(bisonDebug) printf("Current State: %d. Fixing identifiers.\n", current_state);
     ids_max = ids_count;
   }else {
     checkIdsOveflow();
@@ -58,7 +57,7 @@ void checkStateAndIdsOverflow() {
 
 void checkIdsOveflow() {
   if(ids_count == ids_max-1){
-    if(debug) printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
+    if(bisonDebug) printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
     ids_max += 10;
     char** newpointer = (char**) realloc(ids, ids_max * sizeof(char*));
     if (newpointer == NULL) {

@@ -7,11 +7,11 @@ int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 int getFreeMemoryAddress();
 
 void convertStringToNumberAndPutInRegister(char* num){
-  if(debug) printf("String to convert: %s\n", num);
+  if(bisonDebug) printf("String to convert: %s\n", num);
   char *end;
   long lnum = strtol(num, &end, 10);
   if (num == end ) { // got identifier
-    if(debug) printf("Got memory adress identifier, loading into register: '%s'\n", num);
+    if(bisonDebug) printf("Got memory adress identifier, loading into register: '%s'\n", num);
     if (doesStringContainIdSeparator(num)) { // does id is of form a[b]
         char* bId = strrchr(num, '|') + 1;
         int index = (int)(bId - num - 1);
@@ -44,20 +44,20 @@ void convertStringToNumberAndPutInRegister(char* num){
     }
   } else {
     /** Trzeba wyliczyć otrzymaną liczbę poprzez instrukcje: "ZERO -> INC -> INC/SHL". */
-    if(debug) printf("Got number, calculating and putting into register.\n");
+    if(bisonDebug) printf("Got number, calculating and putting into register.\n");
     printCommandsForCreatingNumber(lnum);
   }
 }
 
 void putValueToTmp(char* num){
-  if(debug) printf("putting number to tmp: %s\n", num);
+  if(bisonDebug) printf("putting number to tmp: %s\n", num);
   convertStringToNumberAndPutInRegister(num);
   STORE(ids_count);
   free(num);
 }
 
 void addition(char* a, char* b) {
-	if(debug) printf("addition: %s %s\n", a, b);
+	if(bisonDebug) printf("addition: %s %s\n", a, b);
   convertStringToNumberAndPutInRegister(a);
   STORE(ids_count);
   convertStringToNumberAndPutInRegister(b);
@@ -68,7 +68,7 @@ void addition(char* a, char* b) {
 }
 
 void substraction(char* a, char* b) {
-	if(debug) printf("substraction: %s %s\n", a, b);
+	if(bisonDebug) printf("substraction: %s %s\n", a, b);
   convertStringToNumberAndPutInRegister(b);
   STORE(ids_count);
   convertStringToNumberAndPutInRegister(a);
@@ -79,7 +79,7 @@ void substraction(char* a, char* b) {
 }
 
 void multiply(char* a, char* b) {
-  if(debug) printf("multiply: %s %s\n", a, b);
+  if(bisonDebug) printf("multiply: %s %s\n", a, b);
   int aIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
   if (aIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(a);
@@ -120,9 +120,9 @@ void multiply(char* a, char* b) {
 }
 
 void divide(char* a, char* b) {
-	if(debug) printf("divide: %s %s\n", a, b);
+	if(bisonDebug) printf("divide: %s %s\n", a, b);
   if (strcmp(b, "0") == 0) {
-    if(debug) printf("Dividing by zero.\n");
+    if(bisonDebug) printf("Dividing by zero.\n");
     ZERO();
     STORE(ids_count);
   }
@@ -222,9 +222,9 @@ void divide(char* a, char* b) {
 }
 
 void mod(char* a, char* b) {
-	if(debug) printf("mod: %s %s\n", a, b);
+	if(bisonDebug) printf("mod: %s %s\n", a, b);
   if (strcmp(b, "0") == 0) {
-    if(debug) printf("Modulo zero.\n");
+    if(bisonDebug) printf("Modulo zero.\n");
     ZERO();
     STORE(ids_count);
   }

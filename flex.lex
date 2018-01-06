@@ -7,7 +7,9 @@
 
 	extern long code_k;
 
-  int debug = 0;
+  int flexDebug = 0; // debug
+  int bisonDebug = 0; // debug
+  int printK = 0; // debug
   void printLex(char* s);
   void lexError(char* s);
 	long varFound();
@@ -84,7 +86,7 @@ void lexError(char* s){
 }
 
 void printLex(char* s) {
-  if(debug){
+  if(flexDebug){
     printf("FLEX: '%s'\n", s);
   }
 }
