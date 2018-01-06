@@ -7,12 +7,6 @@ both: flex.lex bison.y
 	$(MAKE) compile
 	mv a.out bin/a.out
 
-lex.yy.c: flex.lex
-	make flex
-
-bison.yy.h: bison.y
-	make bison
-
 flex:
 		flex flex.lex
 		mv lex.yy.c bin/lex.yy.c
@@ -33,10 +27,5 @@ compile:
 	gcc -g bin/lex.yy.c bin/bison.yy.h -ll -lm
 
 run:
-	$(MAKE) bison
-	@echo "\n***********************************\n"
-	$(MAKE) flex
-	@echo "\n***********************************\n"
-	$(MAKE) compile
-	mv a.out bin/a.out
+	$(MAKE) both
 	./bin/a.out
