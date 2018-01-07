@@ -7,11 +7,12 @@
 
 using namespace std;
 
+extern map<string, int> forLoopsVariables;
 extern int ids_count;
 extern char** ids;
 extern int free_tmp_pointer;
-extern int bisonDebug;
 extern int printK;
+extern int bisonDebug;
 
 void yyerror (char const *);
 
@@ -20,6 +21,9 @@ int getIdNumIfExists(char* id) {
         if(strcmp(id, ids[i]) == 0){
            return i;
         }
+    }
+    if(forLoopsVariables.find(id) != forLoopsVariables.end()) {
+      return forLoopsVariables[id];
     }
     yyerror(UNDECLARED_VARIABLE);
 }

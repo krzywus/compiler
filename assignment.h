@@ -6,6 +6,14 @@ extern int getIdNumIfExists(char* id);
 extern vector<string> initializedVariables;
 extern map<string, int> forLoopsVariables;
 
+int getIdNumIfExistsForAssignment(char* id){
+  for(int i=0; i < ids_count; i++){
+      if(strcmp(id, ids[i]) == 0){
+         return i;
+      }
+  }
+  yyerror(UNDECLARED_VARIABLE);
+}
 
 void assignToVariable(char* id) {
   if(bisonDebug) printf("assign to: '%s'\n", id);
@@ -45,7 +53,7 @@ void assignToVariable(char* id) {
       free(a0Id);
       free(a0IdAddrString);
   } else {
-      assignId = getIdNumIfExists(id);
+      assignId = getIdNumIfExistsForAssignment(id);
       initializedVariables.push_back(id);
       STORE(assignId);
   }
