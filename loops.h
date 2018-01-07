@@ -24,8 +24,8 @@ void endWhile(){
   }
   for (int i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("COND") != string::npos) {
+      if (commands[i].find("BEGIN") != string::npos) {
         if (beginFound > 0) {
-          if (commands[i].find("BEGIN") != string::npos) {
             if(bisonDebug) cout << "BEGIN found, decreasing loopStart place." << endl;
             loopStart -= 2; // zmniejszamy o 2 za każde 2 instrukcje, które będą usuwane
         } else if (beginFound == 0){
