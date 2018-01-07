@@ -10,14 +10,10 @@ int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 
 void endWhile(){
   int beginFound = 0;
-  if(bisonDebug) cout << "ENDING WHILE" << endl;
-  if(bisonDebug) cout << commands.size() << endl;
+  if(bisonDebug) cout << "ENDING WHILE, k:" << program_k << endl;
+  if(bisonDebug) cout << "commands size " << commands.size() << endl;
   int loopStart = -1;
-  int max_k = 0;
-  for (int i = commands.size()-1; i > 0; i--) {
-      max_k++;
-  }
-  max_k++;
+  int max_k = commands.size();
   for (int i = commands.size()-1; i > 0; i--) {
       if (commands[i].find("WHILE START") != string::npos) {
         if(bisonDebug) cout << "Loop started at: " << i << endl;
@@ -28,16 +24,16 @@ void endWhile(){
   }
   for (int i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("COND") != string::npos) {
-      if (commands[i].find("BEGIN") != string::npos) {
-        if (beginFound != 0) {
-            loopStart -= 2;
-            JUMP(loopStart);
-            return;
+        if (beginFound > 0) {
+          if (commands[i].find("BEGIN") != string::npos) {
+            if(bisonDebug) cout << "BEGIN found, decreasing loopStart place." << endl;
+            loopStart -= 2; // zmniejszamy o 2 za każde 2 instrukcje, które będą usuwane
+        } else if (beginFound == 0){
+          if(bisonDebug) cout << "turning flag on at: " << i << endl;
+          commands.erase(commands.begin()+i);
         }
-        if(bisonDebug) cout << "turning flag on at: " << i << endl;
-        beginFound = 1;
-        commands.erase(commands.begin()+i);
-      } else {
+        beginFound++;
+      } else if (beginFound < 2) {
         if (commands[i].find("OVER") != string::npos) {
           if (commands[i].find("JZERO") != string::npos) {
             if(bisonDebug) cout << "inserting JZERO at: " << i << endl;
@@ -56,6 +52,7 @@ void endWhile(){
       }
     }
   }
+  if(bisonDebug) cout << "Inserting JUMP " << loopStart << " at " << program_k << endl;
   JUMP(loopStart);
 }
 

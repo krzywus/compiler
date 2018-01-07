@@ -45,7 +45,7 @@ void endElse(){
   if(bisonDebug) cout << "ENDING ELSE, k: " << program_k <<  endl;
   int max_k = 0;
   for (int i = commands.size()-1; i > 0; i--) {
-    if (commands[i].find("BEGIN") == string::npos) {
+    if (commands[i].find("BEGIN") == string::npos && commands[i].find("START") == string::npos) {
       max_k++;
     }
   }
