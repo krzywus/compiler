@@ -33,7 +33,7 @@
 #define DEFAULT_ERROR_CODE                 99
 
 
-int getErrorCode(char const *s){
+long getErrorCode(char const *s){
   if(strcmp(s, SYNTAX_ERROR) == 0){
     return SYNTAX_ERROR_ERROR_CODE;
   }

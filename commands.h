@@ -20,56 +20,56 @@ void PUT() {
 	program_k++;
 }
 
-void LOAD(int i) {
+void LOAD(long i) {
   stringstream ss;
   ss << "LOAD " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void LOADI(int i) {
+void LOADI(long i) {
   stringstream ss;
   ss << "LOADI " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void STORE(int i) {
+void STORE(long i) {
   stringstream ss;
   ss << "STORE " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void STOREI(int i) {
+void STOREI(long i) {
   stringstream ss;
   ss << "STOREI " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void ADD(int i) {
+void ADD(long i) {
   stringstream ss;
   ss << "ADD " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void ADDI(int i) {
+void ADDI(long i) {
   stringstream ss;
   ss << "ADDI " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void SUB(int i) {
+void SUB(long i) {
   stringstream ss;
   ss << "SUB " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void SUBI(int i) {
+void SUBI(long i) {
   stringstream ss;
   ss << "SUBI " << i << endl;
 	commands.push_back(ss.str());
@@ -111,21 +111,21 @@ void ZERO() {
 	program_k++;
 }
 
-void JUMP(int i) {
+void JUMP(long i) {
   stringstream ss;
   ss << "JUMP " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void JZERO(int i) {
+void JZERO(long i) {
   stringstream ss;
   ss << "JZERO " << i << endl;
 	commands.push_back(ss.str());
 	program_k++;
 }
 
-void JODD(int i) {
+void JODD(long i) {
   stringstream ss;
   ss << "JODD " << i << endl;
 	commands.push_back(ss.str());

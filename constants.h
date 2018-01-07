@@ -8,16 +8,16 @@
 using namespace std;
 
 extern map<string, int> forLoopsVariables;
-extern int ids_count;
+extern long ids_count;
 extern char** ids;
-extern int free_tmp_pointer;
-extern int printK;
-extern int bisonDebug;
+extern long free_tmp_pointer;
+extern long printK;
+extern long bisonDebug;
 
 void yyerror (char const *);
 
-int getIdNumIfExists(char* id) {
-    for(int i=0; i < ids_count; i++){
+long getIdNumIfExists(char* id) {
+    for(long i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
            return i;
         }
@@ -28,8 +28,8 @@ int getIdNumIfExists(char* id) {
     yyerror(UNDECLARED_VARIABLE);
 }
 
-int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id) {
-    for(int i=0; i < ids_count; i++){
+long getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id) {
+    for(long i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
            return i;
         }
@@ -38,7 +38,7 @@ int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id) {
     return free_tmp_pointer;
 }
 
-int getFreeMemoryAddress(){
+long getFreeMemoryAddress(){
   free_tmp_pointer++;
   return free_tmp_pointer;
 }
@@ -50,7 +50,7 @@ char* concat(char* a, char* b) {
   return result;
 }
 
-int doesStringContainIdSeparator(char* text) {
+long doesStringContainIdSeparator(char* text) {
   char* position = strchr(text, '|');
   if (position) {
     return 1;

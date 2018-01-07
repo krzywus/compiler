@@ -7,9 +7,9 @@
 
 	extern long code_k;
 
-  int flexDebug = 0; // debug
-  int bisonDebug = 0; // debug
-  int printK = 0; // debug
+  long flexDebug = 0; // debug
+  long bisonDebug = 0; // debug
+  long printK = 0; // debug
   void printLex(char* s);
   void lexError(char* s);
 	long varFound();

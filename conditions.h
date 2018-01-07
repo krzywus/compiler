@@ -6,11 +6,11 @@ using namespace std;
 extern vector<string> commands;
 void convertStringToNumberAndPutInRegister(char* num);
 
-void endIf(int modifier){
-  int beginFound = 0;
+void endIf(long modifier){
+  long beginFound = 0;
   if(bisonDebug) cout << "ENDING IF" << endl;
   if(bisonDebug) cout << commands.size() << endl;
-  for (int i = commands.size()-1; i > 0; i--) {
+  for (long i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("COND") != string::npos) {
       if (commands[i].find("BEGIN") != string::npos) {
         if (beginFound != 0) {
@@ -41,17 +41,17 @@ void endIf(int modifier){
 }
 
 void endElse(){
-  int beginFound = 0;
+  long beginFound = 0;
   if(bisonDebug) cout << "ENDING ELSE, k: " << program_k <<  endl;
-  int max_k = 0;
-  for (int i = commands.size()-1; i > 0; i--) {
+  long max_k = 0;
+  for (long i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("BEGIN") == string::npos && commands[i].find("START") == string::npos) {
       max_k++;
     }
   }
   max_k++;
   if(bisonDebug) cout << "max_k: " << max_k << "  comLen: " << commands.size() << endl;
-  for (int i = commands.size()-1; i > 0; i--) {
+  for (long i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("COND") != string::npos) {
       if (commands[i].find("BEGIN") != string::npos) {
         if (beginFound != 0) {
@@ -64,7 +64,7 @@ void endElse(){
           if (commands[i].find("JUMP OVER") != string::npos) {
               if(bisonDebug) cout << "inserting JUMP at: " << i << endl;
               stringstream ss;
-              ss <<  "JUMP " << min((int)(program_k+1), max_k) << endl;
+              ss <<  "JUMP " << min((long)(program_k+1), max_k) << endl;
               commands[i] = ss.str();
           }else{
             cout << "something weird at: " << i << endl;
@@ -83,7 +83,7 @@ void condISEQ(string a, string b) {
   b_cstr[b.size()] = '\0';
 
   convertStringToNumberAndPutInRegister(b_cstr);
-  int tmpMemAddr = getFreeMemoryAddress();
+  long tmpMemAddr = getFreeMemoryAddress();
   STORE(tmpMemAddr);
   convertStringToNumberAndPutInRegister(a_cstr);
   INC();
@@ -107,7 +107,7 @@ void condUNEQ(string a, string b) {
   b_cstr[b.size()] = '\0';
 
   convertStringToNumberAndPutInRegister(b_cstr);
-  int tmpMemAddr = getFreeMemoryAddress();
+  long tmpMemAddr = getFreeMemoryAddress();
   STORE(tmpMemAddr);
   convertStringToNumberAndPutInRegister(a_cstr);
   INC();
@@ -130,7 +130,7 @@ void condLESS(string a, string b) {
     b_cstr[b.size()] = '\0';
 
     convertStringToNumberAndPutInRegister(a_cstr);
-    int tmpMemAddr = getFreeMemoryAddress();
+    long tmpMemAddr = getFreeMemoryAddress();
     STORE(tmpMemAddr);
     convertStringToNumberAndPutInRegister(b_cstr);
     SUB(tmpMemAddr);
@@ -150,7 +150,7 @@ void condLEQ(string a, string b) {
   b_cstr[b.size()] = '\0';
 
   convertStringToNumberAndPutInRegister(a_cstr);
-  int tmpMemAddr = getFreeMemoryAddress();
+  long tmpMemAddr = getFreeMemoryAddress();
   STORE(tmpMemAddr);
   convertStringToNumberAndPutInRegister(b_cstr);
   INC();
@@ -171,7 +171,7 @@ void condGREATER(string a, string b) {
       b_cstr[b.size()] = '\0';
 
       convertStringToNumberAndPutInRegister(b_cstr);
-      int tmpMemAddr = getFreeMemoryAddress();
+      long tmpMemAddr = getFreeMemoryAddress();
       STORE(tmpMemAddr);
       convertStringToNumberAndPutInRegister(a_cstr);
       SUB(tmpMemAddr);
@@ -191,7 +191,7 @@ void condGTEQ(string a, string b) {
     b_cstr[b.size()] = '\0';
 
     convertStringToNumberAndPutInRegister(b_cstr);
-    int tmpMemAddr = getFreeMemoryAddress();
+    long tmpMemAddr = getFreeMemoryAddress();
     STORE(tmpMemAddr);
     convertStringToNumberAndPutInRegister(a_cstr);
     INC();

@@ -6,15 +6,15 @@ using namespace std;
 extern vector<string> commands;
 extern map<string, int> forLoopsVariables;
 void convertStringToNumberAndPutInRegister(char* num);
-int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
+long getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 
 void endWhile(){
-  int beginFound = 0;
+  long beginFound = 0;
   if(bisonDebug) cout << "ENDING WHILE, k:" << program_k << endl;
   if(bisonDebug) cout << "commands size " << commands.size() << endl;
-  int loopStart = -1;
-  int max_k = commands.size();
-  for (int i = commands.size()-1; i > 0; i--) {
+  long loopStart = -1;
+  long max_k = commands.size();
+  for (long i = commands.size()-1; i > 0; i--) {
       if (commands[i].find("WHILE START") != string::npos) {
         if(bisonDebug) cout << "Loop started at: " << i << endl;
         loopStart = i;
@@ -22,7 +22,7 @@ void endWhile(){
         break;
       }
   }
-  for (int i = commands.size()-1; i > 0; i--) {
+  for (long i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("COND") != string::npos) {
       if (commands[i].find("BEGIN") != string::npos) {
         if (beginFound > 0) {
@@ -38,12 +38,12 @@ void endWhile(){
           if (commands[i].find("JZERO") != string::npos) {
             if(bisonDebug) cout << "inserting JZERO at: " << i << endl;
             stringstream ss;
-            ss <<  "JZERO " << min((int)(program_k+1), max_k) << endl;
+            ss <<  "JZERO " << min((long)(program_k+1), max_k) << endl;
             commands[i] = ss.str();
           } else if (commands[i].find("JUMP") != string::npos) {
             if(bisonDebug) cout << "inserting JUMP at: " << i << endl;
             stringstream ss;
-            ss <<  "JUMP " << min((int)(program_k+1), max_k) << endl;
+            ss <<  "JUMP " << min((long)(program_k+1), max_k) << endl;
             commands[i] = ss.str();
           }
         }else{
@@ -58,7 +58,7 @@ void endWhile(){
 
 
 void forFromTo(char* id, char* from, char* to){
-    int idMemAddr = getIdNumIfExistsOrFreeMemoryAddressOtherwise(id);
+    long idMemAddr = getIdNumIfExistsOrFreeMemoryAddressOtherwise(id);
     if (idMemAddr < ids_count) {
       yyerror(SECOND_DECLARATION);
     }
@@ -67,7 +67,7 @@ void forFromTo(char* id, char* from, char* to){
     convertStringToNumberAndPutInRegister(from);
     STORE(idMemAddr);
     convertStringToNumberAndPutInRegister(to);
-    int tmpMemAddr = getFreeMemoryAddress();
+    long tmpMemAddr = getFreeMemoryAddress();
     STORE(tmpMemAddr);
 
     stringstream ss;
@@ -84,7 +84,7 @@ void forFromTo(char* id, char* from, char* to){
 }
 
 void forFromDownTo(char* id, char* from, char* to){
-  int idMemAddr = getIdNumIfExistsOrFreeMemoryAddressOtherwise(id);
+  long idMemAddr = getIdNumIfExistsOrFreeMemoryAddressOtherwise(id);
   if (idMemAddr < ids_count) {
     yyerror(SECOND_DECLARATION);
   }
@@ -93,7 +93,7 @@ void forFromDownTo(char* id, char* from, char* to){
   convertStringToNumberAndPutInRegister(from);
   STORE(idMemAddr);
   convertStringToNumberAndPutInRegister(to);
-  int tmpMemAddr = getFreeMemoryAddress();
+  long tmpMemAddr = getFreeMemoryAddress();
   STORE(tmpMemAddr);
 
   stringstream ss;
@@ -110,11 +110,11 @@ void forFromDownTo(char* id, char* from, char* to){
 }
 
 void endFor(){
-  int beginFound = 0;
+  long beginFound = 0;
   if(bisonDebug) cout << "ENDING FOR, k: " << program_k << endl;
   if(bisonDebug) cout << "commands_size: " << commands.size() << endl;
-  int loopStart = -1;
-  for (int i = commands.size()-1; i > 0; i--) {
+  long loopStart = -1;
+  for (long i = commands.size()-1; i > 0; i--) {
       if (commands[i].find("FINCSTART") != string::npos) {
         if(bisonDebug) cout << "Loop started at: " << i << endl;
         loopStart = i;
@@ -144,13 +144,13 @@ void endFor(){
         break;
       }
   }
-  int max_k = 0;
-  for (int i = commands.size()-1; i > 0; i--) {
+  long max_k = 0;
+  for (long i = commands.size()-1; i > 0; i--) {
     max_k++;
   }
   max_k++;
   if(bisonDebug) cout << "max_k: " << max_k << endl;
-  for (int i = commands.size()-1; i > 0; i--) {
+  for (long i = commands.size()-1; i > 0; i--) {
     if (commands[i].find("COND") != string::npos) {
       if (commands[i].find("BEGIN") != string::npos) {
         if (beginFound != 0) {
@@ -166,12 +166,12 @@ void endFor(){
           if (commands[i].find("JZERO") != string::npos) {
             if(bisonDebug) cout << "inserting JZERO at: " << i << endl;
             stringstream ss;
-            ss <<  "JZERO " << min((int)(program_k+1), max_k) << endl;
+            ss <<  "JZERO " << min((long)(program_k+1), max_k) << endl;
             commands[i] = ss.str();
           } else if (commands[i].find("JUMP") != string::npos) {
             if(bisonDebug) cout << "inserting JUMP at: " << i << endl;
             stringstream ss;
-            ss <<  "JUMP " << min((int)(program_k+1), max_k) << endl;
+            ss <<  "JUMP " << min((long)(program_k+1), max_k) << endl;
             commands[i] = ss.str();
           }
         }else{

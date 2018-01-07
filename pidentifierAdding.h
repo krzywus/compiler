@@ -3,11 +3,11 @@
 
 #include "constants.h"
 
-extern int current_state;
+extern long current_state;
 extern char** ids;
-extern int ids_count;
-extern int ids_max;
-extern int free_tmp_pointer;
+extern long ids_count;
+extern long ids_max;
+extern long free_tmp_pointer;
 
 void addVarIdentifier(char* id);
 void addArrayIdentifier(char* id, char* amount);
@@ -28,14 +28,14 @@ void addVarIdentifier(char* id){
 void addArrayIdentifier(char* id, char* amount){
   if(bisonDebug) printf("BISON: array pidentifier found '%s', size: %s\n", id, amount);
   checkIfUnique(id);
-  int intAmount = atoi(amount);
+  long intAmount = atoi(amount);
   if (intAmount == 0) {
     yyerror(ZERO_ARRAY_DECLARATION);
   }
-  for (int i = 0; i < intAmount; i++) {
-    int ilen = snprintf( NULL, 0, "%d", i );
+  for (long i = 0; i < intAmount; i++) {
+    long ilen = snprintf( NULL, 0, "%ld", i );
     char* inum = (char*) malloc( ilen + 1 );
-    snprintf( inum, ilen + 1, "%d", i );
+    snprintf( inum, ilen + 1, "%ld", i );
     ids[ids_count] = concat(id, inum);
     ids_count++;
     checkIdsOveflow();
@@ -48,7 +48,7 @@ void addArrayIdentifier(char* id, char* amount){
 void checkStateAndIdsOverflow() {
   free_tmp_pointer = ids_count;
   if(current_state == BEGINZ_STATE){
-    if(bisonDebug) printf("Current State: %d. Fixing identifiers.\n", current_state);
+    if(bisonDebug) printf("Current State: %ld. Fixing identifiers.\n", current_state);
     ids_max = ids_count;
   }else {
     checkIdsOveflow();
@@ -58,7 +58,7 @@ void checkStateAndIdsOverflow() {
 void checkIdsOveflow() {
   if(ids_count == ids_max-1){
     if(bisonDebug) printf("BISON DEBUG: reallocating identifiers due to overflow.\n");
-    ids_max += 10;
+    ids_max += 10000000;
     char** newpointer = (char**) realloc(ids, ids_max * sizeof(char*));
     if (newpointer == NULL) {
       yyerror(REALLOCATE_FAILURE);
@@ -69,7 +69,7 @@ void checkIdsOveflow() {
 }
 
 void checkIfUnique(char* id){
-    for(int i=0; i < ids_count; i++){
+    for(long i=0; i < ids_count; i++){
         if(strcmp(id, ids[i]) == 0){
            yyerror(SECOND_DECLARATION);
         }

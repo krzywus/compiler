@@ -24,18 +24,18 @@
 
   using namespace std;
 
-  int current_state = -1;
+  long current_state = -1;
 
 	vector<string> commands;
   map<string, int> forLoopsVariables;
   vector<string> initializedVariables;
 
-  int ids_max = 0;
-  int ids_count = 0;
+  long ids_max = 0;
+  long ids_count = 0;
   char** ids;
   long program_k;
   long code_k;
-  int free_tmp_pointer;
+  long free_tmp_pointer;
 
   int yylex (void);
   void yyerror (char const *);
@@ -52,7 +52,7 @@
   void readAndStore(char* id);
   void writeVariable(char* var);
   /* errors.h */
-  int getErrorCode(char const *s);
+  long getErrorCode(char const *s);
   /* arithmetic.h */
   void putValueToTmp(char* num);
   void addition(char* a, char* b);
@@ -67,7 +67,7 @@
   void condGREATER(string a, string b);
   void condLEQ(string a, string b);
   void condGTEQ(string a, string b);
-  void endIf(int modifier);
+  void endIf(long modifier);
   void endElse();
   /* loops.h */
   void endWhile();
@@ -179,13 +179,13 @@ int main (void) {
 void initialize(){
   program_k = 0;
   ids_count = 0;
-  ids_max = 20;
+  ids_max = 10000000;
   ids = (char**) malloc(ids_max * sizeof(char*));
 }
 
 void finalize(){
   if(bisonDebug) printf("Identifiers: ");
-  for(int i=0; i < ids_count; i++){
+  for(long i=0; i < ids_count; i++){
     if(bisonDebug) printf("%s ", ids[i]);
     free(ids[i]);
   }
@@ -195,7 +195,7 @@ void finalize(){
 
 void printResult(){
   HALT();
-  for(int i=0; i < commands.size(); i++){
+  for(long i=0; i < commands.size(); i++){
     if(printK) {
       cout << i << " " << commands[i];
     } else {

@@ -7,8 +7,8 @@ using namespace std;
 extern map<string, int> forLoopsVariables;
 extern vector<string> initializedVariables;
 extern long program_k;
-int getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
-int getFreeMemoryAddress();
+long getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
+long getFreeMemoryAddress();
 
 void convertStringToNumberAndPutInRegister(char* num){
   if(bisonDebug) printf("String to convert: %s\n", num);
@@ -18,20 +18,20 @@ void convertStringToNumberAndPutInRegister(char* num){
     if(bisonDebug) printf("Got memory adress identifier, loading into register: '%s'\n", num);
     if (doesStringContainIdSeparator(num)) { // does id is of form a[b]
         char* bId = strrchr(num, '|') + 1;
-        int index = (int)(bId - num - 1);
-        int bAddr = getIdNumIfExists(bId);
+        long index = (long)(bId - num - 1);
+        long bAddr = getIdNumIfExists(bId);
 
         char* aId = (char*) malloc(sizeof(char)*index);
         memset(aId, '\0', index+1);
         strncpy(aId, num, index);
         char* a0Id = concat(aId, "0");
-        int a0IdAddr = getIdNumIfExists(a0Id);
+        long a0IdAddr = getIdNumIfExists(a0Id);
 
-        int a0IdAddrLen = snprintf( NULL, 0, "%d", a0IdAddr );
+        long a0IdAddrLen = snprintf( NULL, 0, "%ld", a0IdAddr );
         char* a0IdAddrString = (char*) malloc( a0IdAddrLen + 1 );
-        snprintf( a0IdAddrString, a0IdAddrLen + 1, "%d", a0IdAddr );
+        snprintf( a0IdAddrString, a0IdAddrLen + 1, "%ld", a0IdAddr );
 
-        int tmpMemAddr = getFreeMemoryAddress();
+        long tmpMemAddr = getFreeMemoryAddress();
 
         convertStringToNumberAndPutInRegister(a0IdAddrString); // put a0 adress in register
         STORE(tmpMemAddr);
@@ -49,8 +49,8 @@ void convertStringToNumberAndPutInRegister(char* num){
       }
       if(find(initializedVariables.begin(), initializedVariables.end(), num) == initializedVariables.end()) {
         // arrays could be initialized using other variables, which is hard to detect
-        int flag = 0;
-        for(int i=0; num[i] != '\0'; i++) {
+        long flag = 0;
+        for(long i=0; num[i] != '\0'; i++) {
           if(num[i]=='0'||num[i]=='1'||num[i]=='2'||num[i]=='3'||num[i]=='5'||num[i]=='6'||num[i]=='7'||num[i]=='8'||num[i]=='9') {
             flag++; break;
           }
@@ -60,7 +60,7 @@ void convertStringToNumberAndPutInRegister(char* num){
           yyerror(UNINITIALIZED_VARIABLE);
         }
       }
-      int i = getIdNumIfExists(num);
+      long i = getIdNumIfExists(num);
       LOAD(i);
     }
   } else {
@@ -101,7 +101,7 @@ void substraction(char* a, char* b) {
 
 void multiply(char* a, char* b) {
   if(bisonDebug) printf("multiply: %s %s\n", a, b);
-  int aIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
+  long aIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
   if (aIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(a);
     STORE(aIdNum);
@@ -110,7 +110,7 @@ void multiply(char* a, char* b) {
     aIdNum = getFreeMemoryAddress();
     STORE(aIdNum);
   }
-  int bIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
+  long bIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
   if (bIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(b);
     STORE(bIdNum);
@@ -121,7 +121,7 @@ void multiply(char* a, char* b) {
   }
   char* result = strdup("0"); // neccessary, will be freed inside putValueToTmp
   putValueToTmp(result);
-  int pointOfReturn = program_k;
+  long pointOfReturn = program_k;
   LOAD(aIdNum);
   JZERO(program_k+13);
       DEC();
@@ -148,7 +148,7 @@ void divide(char* a, char* b) {
     STORE(ids_count);
   }
 
-  int remainIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
+  long remainIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
   if (remainIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(a);
   } else {
@@ -157,7 +157,7 @@ void divide(char* a, char* b) {
   }
   STORE(remainIdNum);
 
-  int scaledDivisorIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
+  long scaledDivisorIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
   if (scaledDivisorIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(b);
   } else {
@@ -166,10 +166,10 @@ void divide(char* a, char* b) {
   }
   STORE(scaledDivisorIdNum);
 
-  int resultIdNum = getFreeMemoryAddress(); // = 0
+  long resultIdNum = getFreeMemoryAddress(); // = 0
   convertStringToNumberAndPutInRegister("0");
   STORE(resultIdNum);
-	int multipleIdNum = getFreeMemoryAddress(); // = 1
+	long multipleIdNum = getFreeMemoryAddress(); // = 1
   convertStringToNumberAndPutInRegister("1");
   STORE(multipleIdNum);
 
@@ -177,7 +177,7 @@ void divide(char* a, char* b) {
   LOAD(scaledDivisorIdNum);
   JZERO((program_k+52));  // dzielenie przez zero
 
-  int pointOfReturn = program_k;
+  long pointOfReturn = program_k;
   LOAD(remainIdNum);
   SUB(scaledDivisorIdNum);
   JZERO(program_k+8);  //while (scaledDivisor < remain=dividend)
@@ -250,7 +250,7 @@ void mod(char* a, char* b) {
     STORE(ids_count);
   }
 
-  int remainIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
+  long remainIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(a);
   if (remainIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(a);
   } else {
@@ -259,7 +259,7 @@ void mod(char* a, char* b) {
   }
   STORE(remainIdNum);
 
-  int scaledDivisorIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
+  long scaledDivisorIdNum = getIdNumIfExistsOrFreeMemoryAddressOtherwise(b);
   if (scaledDivisorIdNum > ids_count) {
     convertStringToNumberAndPutInRegister(b);
   } else {
@@ -268,17 +268,17 @@ void mod(char* a, char* b) {
   }
   STORE(scaledDivisorIdNum);
 
-  int resultIdNum = getFreeMemoryAddress(); // = 0
+  long resultIdNum = getFreeMemoryAddress(); // = 0
   convertStringToNumberAndPutInRegister("0");
   STORE(resultIdNum);
-	int multipleIdNum = getFreeMemoryAddress(); // = 1
+	long multipleIdNum = getFreeMemoryAddress(); // = 1
   convertStringToNumberAndPutInRegister("1");
   STORE(multipleIdNum);
 
   LOAD(scaledDivisorIdNum);
   JZERO((program_k+52));  // dzielenie przez zero
 
-  int pointOfReturn = program_k;
+  long pointOfReturn = program_k;
   LOAD(remainIdNum);
   SUB(scaledDivisorIdNum);
   JZERO(program_k+8);  //while (scaledDivisor < remain=dividend)
