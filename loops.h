@@ -135,6 +135,7 @@ void endFor(){
         string idString = commands[i].substr(10, commands[i].length()-11);
 
         LOAD(forLoopsVariables[idString]);
+        JZERO(program_k+4);
         DEC();
         STORE(forLoopsVariables[idString]);
 
