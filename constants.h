@@ -21,15 +21,18 @@ extern long bisonDebug;
 void yyerror (char const *);
 int doesStringContainNumber(string str);
 long searchForIdNum(char* id);
+long searchInNormalVariables(char* id);
+long searchInArrayVariables(char* id);
+long searchInLoopVariables(char* id);
 
 long getIdNumIfExists(char* id) {
   long idNum = searchForIdNum(id);
   if (idNum != -1) {
     return idNum;
   }
-  if(forLoopsVariables.find(id) != forLoopsVariables.end()) {
-    if(bisonDebug) printf("Matching id loop variable adress: %s %d", id, forLoopsVariables[id]);
-    return forLoopsVariables[id];
+  idNum = searchInLoopVariables(id);
+  if (idNum != -1) {
+    return idNum;
   }
   yyerror(UNDECLARED_VARIABLE);
 }
@@ -49,6 +52,14 @@ long getFreeMemoryAddress(){
 }
 
 long searchForIdNum(char* id) {
+  long idNum = searchInNormalVariables(id);
+  if (idNum == -1) {
+    idNum = searchInArrayVariables(id);
+  }
+  return idNum;
+}
+
+long searchInNormalVariables(char* id) {
   for(long i=0; i < normal_ids_count; i++){
     if(ids[i].compare(id) == 0){
       long j =i;
@@ -66,6 +77,10 @@ long searchForIdNum(char* id) {
       return j;
     }
   }
+  return -1;
+}
+
+long searchInArrayVariables(char* id) {
   string idStringWithNumbers = string(id); // check if is an array
   int firstNumIndex = doesStringContainNumber(idStringWithNumbers);
   if(firstNumIndex) {
@@ -82,6 +97,14 @@ long searchForIdNum(char* id) {
   return -1;
 }
 
+long searchInLoopVariables(char* id){
+  if(forLoopsVariables.find(id) != forLoopsVariables.end()) {
+    if(bisonDebug) printf("Matching id loop variable adress: %s %d", id, forLoopsVariables[id]);
+    return forLoopsVariables[id];
+  }
+  return -1;
+}
+
 int doesStringContainNumber(string str) {
   for (long i = 0; i < str.length(); i++) {
     if(str[i]=='0'||str[i]=='1'||str[i]=='2'||str[i]=='4'
@@ -92,7 +115,6 @@ int doesStringContainNumber(string str) {
   }
   return 0;
 }
-
 
 char* concat(char* a, char* b) {
   char *result = (char*) malloc(strlen(a)+strlen(b)+1);
