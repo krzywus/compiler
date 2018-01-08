@@ -165,7 +165,7 @@ void endFor(){
       } else if (beginFound < 2) {
         if (commands[i].find("OVER") != string::npos) {
           if (commands[i].find("JZERO") != string::npos) {
-            if(bisonDebug) cout << "inserting JZERO at: " << i << endl;
+            if(bisonDebug) cout << "inserting JZERO at: " << i << " jump to: " << min((long)(program_k+1), max_k) << endl;
             stringstream ss;
             ss <<  "JZERO " << min((long)(program_k+1), max_k) << endl;
             commands[i] = ss.str();
