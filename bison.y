@@ -25,13 +25,13 @@
   using namespace std;
 
 	vector<string> commands;
-  map<string, int> forLoopsVariables;
-  vector<string> initializedVariables;
-
 
   vector<string> ids;
   map<string, long> arrayIdsToSize;
   map<string, long> arrayIdsToFirstPosition;
+  map<string, int> forLoopsVariables;
+  vector<string> initializedVariables;
+
   long ids_count = 0;
   long normal_ids_count = 0;
   long program_k = 0;
