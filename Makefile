@@ -17,7 +17,6 @@ bison:
 compile:
 	cp commands.h bin/
 	cp errors.h bin/
-	cp sectionsKeywords.h bin/
 	cp pidentifierAdding.h bin/
 	cp constants.h bin/
 	cp IO.h bin/

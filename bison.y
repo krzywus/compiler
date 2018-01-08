@@ -24,8 +24,6 @@
 
   using namespace std;
 
-  long current_state = -1;
-
 	vector<string> commands;
   map<string, int> forLoopsVariables;
   vector<string> initializedVariables;
@@ -178,8 +176,6 @@ int main (void) {
 void initialize(){
   program_k = 0;
   ids_count = 0;
-  ids_max = 10000000;
-
 }
 
 void printResult(){

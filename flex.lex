@@ -3,7 +3,6 @@
 	#include<math.h>
 	#include<string.h>
   #include "bison.yy.h"
-	#include "sectionsKeywords.h"
 
 	extern long code_k;
 
@@ -11,10 +10,6 @@
   long bisonDebug = 0; // debug
   long printK = 0; // debug
   void printLex(char* s);
-  void lexError(char* s);
-	long varFound();
-	long beginFound();
-	long endFound();
 	long pidentifierFound();
 	long numFound();
 %}
@@ -28,9 +23,9 @@ comment_re			\({ALL_BUT_BRACES}*\)
 %%
 
 [\ \t]*									;
-VAR											return varFound();
-BEGIN										return beginFound();
-END											return endFound();
+VAR											return VAR;
+BEGIN										return BEGINZ;
+END											return END;
 {pidentifier} 					return pidentifierFound();
 
 {num}										{ return numFound(); }
@@ -66,7 +61,7 @@ WRITE										{ printLex(yytext); return WRITE; }
 
 {comment_re}
 \n						{ code_k++; }
-[A-Z]*				{ lexError("[WARNING] Unknown word found. Ignoring."); lexError(yytext); }
+[A-Z]*				{ printf("[WARNING] Unknown word found: '%s'. Ignoring.", yytext); }
 
 %%
 long pidentifierFound(){
@@ -79,10 +74,6 @@ long numFound() {
 	printLex(yytext);
 	yylval.id = strdup(yytext);
 	return num;
-}
-
-void lexError(char* s){
-	printf("Lexical error: %s\n", s);
 }
 
 void printLex(char* s) {
