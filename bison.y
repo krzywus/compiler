@@ -30,9 +30,12 @@
   map<string, int> forLoopsVariables;
   vector<string> initializedVariables;
 
-  long ids_max = 0;
+
+  vector<string> ids;
+  map<string, long> arrayIdsToSize;
+  map<string, long> arrayIdsToFirstPosition;
   long ids_count = 0;
-  char** ids;
+  long normal_ids_count = 0;
   long program_k;
   long code_k;
   long free_tmp_pointer;
@@ -41,7 +44,6 @@
   void yyerror (char const *);
 
   void initialize();
-  void finalize();
   void printResult();
   void checkIfIdExists(char* id);
   void assignToVariable(char* id);
@@ -169,10 +171,7 @@ identifier:
 int main (void) {
   initialize();
   long result = 0;
-  /*while(result == 0) {*/
-	  result = yyparse();
-	/*}*/
-  finalize();
+  result = yyparse();
   return 0;
 }
 
@@ -180,17 +179,7 @@ void initialize(){
   program_k = 0;
   ids_count = 0;
   ids_max = 10000000;
-  ids = (char**) malloc(ids_max * sizeof(char*));
-}
 
-void finalize(){
-  if(bisonDebug) printf("Identifiers: ");
-  for(long i=0; i < ids_count; i++){
-    if(bisonDebug) printf("%s ", ids[i]);
-    free(ids[i]);
-  }
-  if(bisonDebug) printf("\n");
-  free(ids);
 }
 
 void printResult(){
@@ -208,7 +197,5 @@ void printResult(){
 void yyerror (char const *s)
 {
   fprintf (stderr, "BISON: %s\n", s);
-  finalize();
   exit(getErrorCode(s));
-  /*main();*/
 }

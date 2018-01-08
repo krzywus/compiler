@@ -33,6 +33,7 @@ void convertStringToNumberAndPutInRegister(char* num){
 
         long tmpMemAddr = getFreeMemoryAddress();
 
+        if(bisonDebug) printf("Putting in register a0: %s, Adding to memory address: %ld\n", a0IdAddrString, bAddr);
         convertStringToNumberAndPutInRegister(a0IdAddrString); // put a0 adress in register
         STORE(tmpMemAddr);
         LOAD(bAddr);
@@ -51,7 +52,7 @@ void convertStringToNumberAndPutInRegister(char* num){
         // arrays could be initialized using other variables, which is hard to detect
         long flag = 0;
         for(long i=0; num[i] != '\0'; i++) {
-          if(num[i]=='0'||num[i]=='1'||num[i]=='2'||num[i]=='3'||num[i]=='5'||num[i]=='6'||num[i]=='7'||num[i]=='8'||num[i]=='9') {
+          if(num[i]=='0'||num[i]=='1'||num[i]=='2'||num[i]=='3'||num[i]=='4'||num[i]=='5'||num[i]=='6'||num[i]=='7'||num[i]=='8'||num[i]=='9') {
             flag++; break;
           }
         }
