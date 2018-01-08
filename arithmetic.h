@@ -10,6 +10,8 @@ extern long program_k;
 long getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 long getFreeMemoryAddress();
 int doesStringContainNumber(string str);
+/* assignment.h */
+long putReferenceVariableInMemoryAndReturnAdress(char* id);
 
 void convertStringToNumberAndPutInRegister(char* num){
   if(bisonDebug) printf("String to convert: %s\n", num);
@@ -18,47 +20,23 @@ void convertStringToNumberAndPutInRegister(char* num){
   if (num == end ) { // got identifier
     if(bisonDebug) printf("Got memory adress identifier, loading into register: '%s'\n", num);
     if (doesStringContainIdSeparator(num)) { // does id is of form a[b]
-        char* bId = strrchr(num, '|') + 1;
-        long index = (long)(bId - num - 1);
-        long bAddr = getIdNumIfExists(bId);
-
-        char* aId = (char*) malloc(sizeof(char)*index);
-        memset(aId, '\0', index+1);
-        strncpy(aId, num, index);
-        char* a0Id = concat(aId, "0");
-        long a0IdAddr = getIdNumIfExists(a0Id);
-
-        long a0IdAddrLen = snprintf( NULL, 0, "%ld", a0IdAddr );
-        char* a0IdAddrString = (char*) malloc( a0IdAddrLen + 1 );
-        snprintf( a0IdAddrString, a0IdAddrLen + 1, "%ld", a0IdAddr );
-
-        long tmpMemAddr = getFreeMemoryAddress();
-
-        if(bisonDebug) printf("Putting in register a0: %s, Adding to memory address: %ld\n", a0IdAddrString, bAddr);
-        convertStringToNumberAndPutInRegister(a0IdAddrString); // put a0 adress in register
-        STORE(tmpMemAddr);
-        LOAD(bAddr);
-        ADD(tmpMemAddr);
-        STORE(tmpMemAddr);
+        long tmpMemAddr = putReferenceVariableInMemoryAndReturnAdress(num);
         LOADI(tmpMemAddr);
-        free(aId);
-        free(a0Id);
-        free(a0IdAddrString);
-    } else {
-      if(forLoopsVariables.find(num) != forLoopsVariables.end()) {
-         LOAD(forLoopsVariables[num]);
-         return;
-      }
-      if(find(initializedVariables.begin(), initializedVariables.end(), num) == initializedVariables.end()) {
-        // arrays could be initialized using other variables, which is hard to detect
-        if (!doesStringContainNumber(num)) {
-          if(bisonDebug) cout << "UNINITIALIZED_VARIABLE: " << num << endl;
-          yyerror(UNINITIALIZED_VARIABLE);
-        }
-      }
-      long i = getIdNumIfExists(num);
-      LOAD(i);
+        return;
     }
+    if(forLoopsVariables.find(num) != forLoopsVariables.end()) {
+       LOAD(forLoopsVariables[num]);
+       return;
+    }
+    if(find(initializedVariables.begin(), initializedVariables.end(), num) == initializedVariables.end()) {
+      // arrays could be initialized using other variables, which is hard to detect
+      if (!doesStringContainNumber(num)) {
+        if(bisonDebug) cout << "UNINITIALIZED_VARIABLE: " << num << endl;
+        yyerror(UNINITIALIZED_VARIABLE);
+      }
+    }
+    long i = getIdNumIfExists(num);
+    LOAD(i);
   } else {
     /** Trzeba wyliczyć otrzymaną liczbę poprzez instrukcje: "ZERO -> INC -> INC/SHL". */
     if(bisonDebug) printf("Got number, calculating and putting into register.\n");
