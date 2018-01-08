@@ -2,8 +2,9 @@
 #define IO_H
 
 extern long current_state;
-extern char** ids;
+
 extern long ids_count;
+extern long normal_ids_count;
 extern long ids_max;
 extern long program_k;
 extern vector<string> initializedVariables;
@@ -41,15 +42,10 @@ void readAndStore(char* id){
     GET();
     STOREI(tmpMemAddr);
   } else {
-    for(long i=0; i < ids_count; i++){
-      if(strcmp(id, ids[i]) == 0){
-        GET();
-        STORE(i);
-        initializedVariables.push_back(id);
-        return;
-      }
-    }
-    yyerror(UNDECLARED_VARIABLE);
+    long i = getIdNumIfExists(id);
+    GET();
+    STORE(i);
+    initializedVariables.push_back(id);
   }
 }
 
