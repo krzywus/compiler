@@ -27,7 +27,7 @@ compile:
 	cp conditions.h bin/
 	cp loops.h bin/
 	g++ -std=c++11 -g bin/lex.yy.c bin/bison.yy.h -ll -lm -Wno-write-strings
-	
+
 run:
 	$(MAKE) both
 	./bin/a.out
