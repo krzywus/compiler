@@ -31,6 +31,8 @@
   map<string, int> forLoopsVariables;
   vector<string> initializedVariables;
 
+  long loadedMemory = -1;
+
   long ids_count = 0;
   long normal_ids_count = 0;
   long program_k = 0;

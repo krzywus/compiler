@@ -5,6 +5,7 @@ using namespace std;
 
 extern vector<string> commands;
 extern long program_k;
+extern long loadedMemory;
 
 void GET() {
   stringstream ss;
@@ -21,10 +22,11 @@ void PUT() {
 }
 
 void LOAD(long i) {
+  loadedMemory = i;
   stringstream ss;
   ss << "LOAD " << i << endl;
-	commands.push_back(ss.str());
-	program_k++;
+  commands.push_back(ss.str());
+  program_k++;
 }
 
 void LOADI(long i) {
