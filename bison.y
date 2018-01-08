@@ -1,4 +1,3 @@
-
 %{
   #include <stdio.h>
   #include <stdlib.h>
@@ -38,6 +37,7 @@
   long code_k;
   long free_tmp_pointer;
 
+  extern int yylineno;
   int yylex (void);
   void yyerror (char const *);
 
@@ -182,6 +182,6 @@ void printResult(){
 
 void yyerror (char const *s)
 {
-  fprintf (stderr, "BISON: %s\n", s);
+  fprintf (stderr, "BISON: %s line: %d\n", s, yylineno);
   exit(getErrorCode(s));
 }

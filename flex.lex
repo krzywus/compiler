@@ -1,4 +1,4 @@
-
+%option yylineno
 %{
 	#include<math.h>
 	#include<string.h>
