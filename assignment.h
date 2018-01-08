@@ -5,12 +5,12 @@ extern long program_k;
 extern long getIdNumIfExists(char* id);
 extern vector<string> initializedVariables;
 extern map<string, int> forLoopsVariables;
+extern long loadedMemory;
 
 long getIdNumIfExistsForAssignment(char* id);
 
 void assignToVariable(char* id) {
   if(bisonDebug) printf("assign to: '%s'\n", id);
-  LOAD(ids_count);
   long assignId = -1;
   if (doesStringContainIdSeparator(id)) { // does id is of form a[b]
       char* bId = strrchr(id, '|') + 1;
@@ -47,6 +47,9 @@ void assignToVariable(char* id) {
       free(a0Id);
       free(a0IdAddrString);
   } else {
+      if (loadedMemory != ids_count) {
+        LOAD(ids_count);
+      }
       if(bisonDebug) cout << "getting number" << endl;
       assignId = getIdNumIfExistsForAssignment(id);
       initializedVariables.push_back(id);
