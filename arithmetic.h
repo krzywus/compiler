@@ -9,6 +9,7 @@ extern vector<string> initializedVariables;
 extern long program_k;
 long getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id);
 long getFreeMemoryAddress();
+int doesStringContainNumber(string str);
 
 void convertStringToNumberAndPutInRegister(char* num){
   if(bisonDebug) printf("String to convert: %s\n", num);
@@ -50,13 +51,7 @@ void convertStringToNumberAndPutInRegister(char* num){
       }
       if(find(initializedVariables.begin(), initializedVariables.end(), num) == initializedVariables.end()) {
         // arrays could be initialized using other variables, which is hard to detect
-        long flag = 0;
-        for(long i=0; num[i] != '\0'; i++) {
-          if(num[i]=='0'||num[i]=='1'||num[i]=='2'||num[i]=='3'||num[i]=='4'||num[i]=='5'||num[i]=='6'||num[i]=='7'||num[i]=='8'||num[i]=='9') {
-            flag++; break;
-          }
-        }
-        if (flag == 0) {
+        if (!doesStringContainNumber(num)) {
           if(bisonDebug) cout << "UNINITIALIZED_VARIABLE: " << num << endl;
           yyerror(UNINITIALIZED_VARIABLE);
         }
@@ -107,7 +102,9 @@ void multiply(char* a, char* b) {
     convertStringToNumberAndPutInRegister(a);
     STORE(aIdNum);
   } else {
-    LOAD(aIdNum);
+    if (aIdNum != loadedMemory) {
+      LOAD(aIdNum);
+    }
     aIdNum = getFreeMemoryAddress();
     STORE(aIdNum);
   }
