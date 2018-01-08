@@ -34,14 +34,13 @@
   map<string, long> arrayIdsToFirstPosition;
   long ids_count = 0;
   long normal_ids_count = 0;
-  long program_k;
+  long program_k = 0;
   long code_k;
   long free_tmp_pointer;
 
   int yylex (void);
   void yyerror (char const *);
 
-  void initialize();
   void printResult();
   void checkIfIdExists(char* id);
   void assignToVariable(char* id);
@@ -167,15 +166,9 @@ identifier:
 
 %%
 int main (void) {
-  initialize();
   long result = 0;
   result = yyparse();
-  return 0;
-}
-
-void initialize(){
-  program_k = 0;
-  ids_count = 0;
+  return result;
 }
 
 void printResult(){
@@ -189,7 +182,6 @@ void printResult(){
   }
 }
 
-/* Called by yyparse on error.  */
 void yyerror (char const *s)
 {
   fprintf (stderr, "BISON: %s\n", s);
