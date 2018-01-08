@@ -76,8 +76,6 @@
 %}
 
 %union{
-    long num;
-    char* id;
     char* value;
 }
 
@@ -99,8 +97,8 @@
 %token UNEQ "<>"
 %token EOL /* miscellaneous */
 
-%type <id> pidentifier
-%type <id> identifier
+%type <value> pidentifier
+%type <value> identifier
 %type <value> value
 %type <value> num
 %type <value> expression

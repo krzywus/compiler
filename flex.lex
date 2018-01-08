@@ -66,13 +66,13 @@ WRITE										{ printLex(yytext); return WRITE; }
 %%
 long pidentifierFound(){
 	printLex(yytext);
-	yylval.id = strdup(yytext);
+	yylval.value = strdup(yytext);
 	return pidentifier;
 }
 
 long numFound() {
 	printLex(yytext);
-	yylval.id = strdup(yytext);
+	yylval.value = strdup(yytext);
 	return num;
 }
 
