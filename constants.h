@@ -37,6 +37,15 @@ long getIdNumIfExists(char* id) {
   yyerror(UNDECLARED_VARIABLE);
 }
 
+
+long getIdNumIfExistsForAssignment(char* id){
+  long idNum = searchForIdNum(id);
+  if (idNum != -1) {
+    return idNum;
+  }
+  yyerror(UNDECLARED_VARIABLE);
+}
+
 long getIdNumIfExistsOrFreeMemoryAddressOtherwise(char* id) {
   long idNum = searchForIdNum(id);
   if (idNum != -1) {
