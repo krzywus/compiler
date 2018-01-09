@@ -1,5 +1,6 @@
 
 both: flex.lex bison.y
+	if [ ! -d "bin" ]; then	mkdir bin; fi
 	$(MAKE) bison
 	@echo "\n***********************************\n"
 	$(MAKE) flex
@@ -15,6 +16,7 @@ bison:
 		bison -o bin/bison.yy.h bison.y
 
 compile:
+	if [ ! -d "bin" ]; then	mkdir bin; fi
 	cp commands.h bin/
 	cp errors.h bin/
 	cp pidentifierAdding.h bin/
